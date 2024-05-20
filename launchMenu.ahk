@@ -2,6 +2,8 @@
 #SingleInstance Ignore
 #Include lib\util.ahk
 
+;@Ahk2Exe-SetMainIcon res\launcher.ico
+
 CoordMode "Mouse", "Screen"
 CoordMode "Menu", "Screen"
 
@@ -94,13 +96,18 @@ TrayMenuCallback(ItemName, ItemPos, MyMenu) {
         case "Exit":
             ExitApp
         default:
-            SelectLaunchDir()
-            Reload
+            if SelectLaunchDir() {
+                Reload
+            }
     }
 }
 
 SelectLaunchDir() {
     SelectedFolder := DirSelect(, 0, "选择导航文件夹")
-    if SelectedFolder
+    if SelectedFolder {
         FileCreateShortcut SelectedFolder, A_ScriptDir "\launchDir.lnk"
+        return true
+    } else {
+        return false
+    }
 }
