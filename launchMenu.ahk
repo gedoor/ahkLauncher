@@ -5,6 +5,7 @@
 CoordMode "Mouse", "Screen"
 CoordMode "Menu", "Screen"
 
+TraySetIcon("res\launcher.ico")
 A_IconTip := "导航菜单"
 A_TrayMenu.Delete()
 A_TrayMenu.Add("Reload", TrayMenuCallback)
