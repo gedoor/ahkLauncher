@@ -4,4 +4,4 @@
 
 Send "^!+l"
 
-Run "launcher.exe launchMenu.ahk"
+Run "launcher.exe launchMenu.ahk show"

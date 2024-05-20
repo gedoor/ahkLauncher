@@ -39,7 +39,10 @@ A_TrayMenu.Add()
 A_TrayMenu.Add("Launcher", launcherMenu)
 A_TrayMenu.Default := "Launcher"
 
-showLauncherMenu()
+for arg in A_Args {
+    if arg = "show"
+        showLauncherMenu()
+}
 
 ^!+l:: showLauncherMenu()
 

@@ -10,12 +10,7 @@ createDirTreeMenu(dirTree, iconSize, callback) {
         } else {
             lMenu.Add(item.name, callback)
         }
-        if item.icon.path ~= "\.dll$" {
-            handle := dllHelp.IconExtract(item.icon.path, item.icon.num, iconSize)
-            lMenu.SetIcon(A_Index "&", "HICON:" handle, 0, iconSize)
-        } else {
-            lMenu.SetIcon(A_Index "&", item.icon.path, item.icon.num, iconSize)
-        }
+        lMenu.SetIcon(A_Index "&", item.icon.path, item.icon.num + 1, iconSize)
     }
     lMenu.DefineProp("files", { Value: dirTree })
     return lMenu
