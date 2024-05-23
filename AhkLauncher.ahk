@@ -15,7 +15,7 @@ for arg in A_Args {
 
 Send "^!+l"
 
-Run "launcher.exe launchMenu.ahk show"
+Run A_AhkPath " launchMenu.ahk show"
 
 shellLink1 := ShellLinkW()
 shellLink1.SetTitle("打开导航文件夹")
@@ -24,6 +24,7 @@ shellLink1.Commit
 
 shellLink2 := ShellLinkW()
 shellLink2.SetTitle("设置导航文件夹")
+shellLink2.SetIconLocation(A_ScriptDir "\RES\CONFIGURE.ICO", 0)
 shellLink2.SetPath(A_AhkPath)
 shellLink2.SetArguments(A_ScriptFullPath " setDir")
 shellLink2.Commit

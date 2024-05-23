@@ -12,7 +12,10 @@ A_IconTip := "导航菜单"
 A_TrayMenu.Delete()
 A_TrayMenu.Add("Reload", TrayMenuCallback)
 A_TrayMenu.Add("Exit", TrayMenuCallback)
+A_TrayMenu.Add()
 A_TrayMenu.Add("SelectLaunchDir", TrayMenuCallback)
+A_TrayMenu.Add("OpenLaunchDir", TrayMenuCallback)
+A_TrayMenu.Add("OpenAppDir", TrayMenuCallback)
 
 launcherLnk := A_ScriptDir "\launchDir.lnk"
 
@@ -28,7 +31,7 @@ IconSize := Integer(32 * dpiZom)
 
 try {
     launcTree := getDirTree(launcherPath)
-} catch TimeoutError as err{
+} catch TimeoutError as err {
     MsgBox(err.Message)
     return
 }
@@ -98,10 +101,14 @@ TrayMenuCallback(ItemName, ItemPos, MyMenu) {
             Reload
         case "Exit":
             ExitApp
-        default:
+        case "SelectLaunchDir":
             if SelectLaunchDir() {
                 Reload
             }
+        case "OpenLaunchDir":
+            Run launcherLnk
+        case "OpenAppDir":
+            Run "explore " A_ScriptDir
     }
 }
 

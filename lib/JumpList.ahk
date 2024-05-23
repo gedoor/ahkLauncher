@@ -1,4 +1,4 @@
-class IID {
+class JumpList_IID {
 
     static __New() {
         this.IObjectArray := this.GUID("{92CA9DCD-5622-4bba-A805-5E9F541BD8C9}")
@@ -16,7 +16,7 @@ class IID {
 
 }
 
-class PROPERTY_KEY {
+class JumpList_PROPERTY_KEY {
 
     static __New() {
         this.PKEY_Title := this.DEFINE_PROPERTYKEY("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}", 2)
@@ -53,20 +53,11 @@ class COM {
 
 
 class CustomDestinationList {
-    /*
-    	Field: CLSID
-    	This is CLSID_DestinationList. It is required to create an instance.
-    */
-    CLSID := "{77f10cf0-3db5-4966-b520-b7c54fd35ed6}"
-
-    /*
-    Field: IID
-    This is IID_ICustomDestinationList. It is required to create an instance.
-    */
-    IID := "{6332debf-87b5-4670-90c0-5e57b408a49e}"
 
     __New() {
-        this.comObj := ComObject(this.CLSID, this.IID)
+        CLSID := "{77f10cf0-3db5-4966-b520-b7c54fd35ed6}"
+        IID := "{6332debf-87b5-4670-90c0-5e57b408a49e}"
+        this.comObj := ComObject(CLSID, IID)
     }
 
     SetAppID(id) {
@@ -75,7 +66,7 @@ class CustomDestinationList {
 
     BeginList()
     {
-        ComCall(04, this.comObj, "uint*", &MinSlots := 0, "ptr", IID.IObjectArray.ptr, "ptr*", &ppv := 0)
+        ComCall(04, this.comObj, "uint*", &MinSlots := 0, "ptr", JumpList_IID.IObjectArray.ptr, "ptr*", &ppv := 0)
         return { minSlots: MinSlots, ppv: ppv }
     }
 
@@ -100,7 +91,7 @@ class CustomDestinationList {
 
     GetRemovedDestinations()
     {
-        ComCall(09, this.comObj, "ptr", IID.IObjectArray.ptr, "ptr*", &out)
+        ComCall(09, this.comObj, "ptr", JumpList_IID.IObjectArray.ptr, "ptr*", &out)
         return out
     }
 
@@ -116,22 +107,13 @@ class CustomDestinationList {
 }
 
 class ShellLinkW {
-    /*
-    	Field: CLSID
-    	This is CLSID_ShellLink. It is required to create an instance.
-    */
-    CLSID := "{00021401-0000-0000-C000-000000000046}"
-
-    /*
-    Field: IID
-    This is IID_IShellLinkW. It is required to create an instance.
-    */
-    IID := "{000214F9-0000-0000-C000-000000000046}"
 
     __New() {
-        this.comObj := ComObject(this.CLSID, this.IID)
-        this.PersistFile := this.QueryInterface(IID.IPersistFile)
-        this.PropertyStore := this.QueryInterface(IID.IPropertyStore)
+        CLSID := "{00021401-0000-0000-C000-000000000046}"
+        IID := "{000214F9-0000-0000-C000-000000000046}"
+        this.comObj := ComObject(CLSID, IID)
+        this.PersistFile := this.QueryInterface(JumpList_IID.IPersistFile)
+        this.PropertyStore := this.QueryInterface(JumpList_IID.IPropertyStore)
     }
 
     ; IPersistFile
@@ -199,7 +181,7 @@ class ShellLinkW {
     }
 
     SetTitle(title) {
-        this.SetValue(PROPERTY_KEY.PKEY_Title, COM.InitVariantFromString(title))
+        this.SetValue(JumpList_PROPERTY_KEY.PKEY_Title, COM.InitVariantFromString(title))
     }
 
     ; IPropertyStore
@@ -232,21 +214,11 @@ class ShellLinkW {
 
 class EnumerableObjectCollection {
 
-    /*
-    Field: CLSID
-    This is CLSID_ShellLink. It is required to create an instance.
-    */
-    CLSID := "{2d3468c1-36a7-43b6-ac24-d3f02fd9607a}"
-
-    /*
-    Field: IID
-    This is IID_IShellLinkW. It is required to create an instance.
-    */
-    IID := "{5632b1a4-e38a-400a-928a-d4cd63230295}"
-
     __new()
     {
-        this.comObj := ComObject(this.CLSID, this.IID)
+        CLSID := "{2d3468c1-36a7-43b6-ac24-d3f02fd9607a}"
+        IID := "{5632b1a4-e38a-400a-928a-d4cd63230295}"
+        this.comObj := ComObject(CLSID, IID)
     }
     ; IObjectArray
     QueryInterface(&IID, &pobject)
