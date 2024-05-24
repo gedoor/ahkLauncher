@@ -76,23 +76,30 @@ showLauncherMenu() {
 
 LauncherMenuCallback(ItemName, ItemPos, MyMenu) {
     rPath := MyMenu.files[ItemPos].path
+    if not DirExist("recent") {
+        DirCreate("recent")
+    }
     try {
         Run(rPath)
+        FileCreateShortcut(rPath, "recent\" ItemName)
     } catch {
         FileGetShortcut(rPath, &outTarget, &outWrkDir, &outArgs)
         try {
             Run(outTarget " " outArgs, outWrkDir)
+            FileCreateShortcut(outTarget, "recent\" ItemName, outWrkDir, outArgs)
         } catch {
             try {
                 pf64 := EnvGet("ProgramW6432")
                 _outTarget64 := StrReplace(outTarget, A_ProgramFiles, pf64, , , 1)
                 Run(_outTarget64 " " outArgs, outWrkDir)
+                FileCreateShortcut(_outTarget64, "recent\" ItemName, outWrkDir, outArgs)
             } catch {
                 MsgBox("运行" rPath "失败." A_LastError)
             }
 
         }
     }
+    
 }
 
 TrayMenuCallback(ItemName, ItemPos, MyMenu) {

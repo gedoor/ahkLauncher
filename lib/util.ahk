@@ -1,5 +1,4 @@
 #Requires AutoHotkey v2.0
-#Include dllHelp.ahk
 
 createDirTreeMenu(dirTree, iconSize, callback) {
     lMenu := Menu()
@@ -20,7 +19,7 @@ getDirTree(path, maxSize := 100, start := 0) {
     list := []
     loop Files path "\*", "FD"
     {
-        if A_LoopFileAttrib ~= "[H]"
+        if A_LoopFileAttrib ~= "[HS]"
             continue
         if start > maxSize {
             throw TimeoutError("文件数量超过" maxSize "会影响速度")
