@@ -9,9 +9,7 @@ class IObjectArray {
         return super.Call(comObj?)
     }
 
-    static Type() {
-        return DllUtils.IIDFromString(this.IID)
-    }
+    static Type := DllUtils.IIDFromString(this.IID)
 
     __new(comObj?)
     {
@@ -33,7 +31,7 @@ class IObjectArray {
     }
     GetAt(Index, type)
     {
-        ComCall(4, this.comObj, "uint", Index, "ptr", type.ptr, "ptr*", &pVoid)
+        ComCall(4, this.comObj, "uint", Index, "ptr", type.ptr, "ptr*", &pVoid := 0)
         return pVoid
     }
 }

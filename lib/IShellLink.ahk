@@ -9,9 +9,7 @@ class IShellLink {
         return super.Call(comObj?)
     }
 
-    static Type() {
-        return DllUtils.IIDFromString(this.IID)
-    }
+    static Type := DllUtils.IIDFromString(this.IID)
 
     __New(comObj?) {
         if IsSet(comObj) {
@@ -47,6 +45,13 @@ class IShellLink {
     {
         ComCall(0, this.comObj, "ptr", riid.ptr, "ptr*", &pinterface := 0)
         return pinterface
+    }
+
+    GetDescription()
+    {
+        VarSetStrCapacity(&description, 64) 
+        ComCall(06, this.comObj, "str", description, "int", 64)
+        return description
     }
 
     SetDescription(description)
@@ -109,7 +114,7 @@ class IShellLink {
     GetValue(PROPERTYKEY)
     {
         VarSetStrCapacity(&PROPVARIANT, 8 + 2 * A_PtrSize)
-        ComCall(5, this.PropertyStore, "ptr", PROPERTYKEY.ptr, "ptr", PROPVARIANT.ptr)
+        ComCall(5, this.PropertyStore, "ptr", PROPERTYKEY.ptr, "ptr", StrPtr(PROPVARIANT))
         return PROPVARIANT
     }
     SetValue(key, variant)

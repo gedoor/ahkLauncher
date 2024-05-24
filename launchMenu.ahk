@@ -47,7 +47,8 @@ for arg in A_Args {
         showLauncherMenu()
 }
 
-^!+l:: showLauncherMenu()
+^!+F20:: showLauncherMenu()
+^!+F21:: Reload()
 
 return
 
