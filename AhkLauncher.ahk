@@ -4,6 +4,7 @@
 #Include lib\ICustomDestinationList.ahk
 #Include lib\IShellLink.ahk
 #Include lib\IObjectCollection.ahk
+#Include lib\ArrayExtensions.ahk
 
 for arg in A_Args {
     switch arg {
@@ -86,24 +87,46 @@ upJumpList() {
         FileDelete(A_ScriptDir "\recent\" fileName)
     }
 
-    recentCol := IObjectCollection()
+    recentArray := []
     loop files "recent\*", "F"
     {
         if A_LoopFileAttrib ~= "[HS]"
             continue
-        shellLink := IShellLink()
-        if A_LoopFileExt != "" {
-            title := SubStr(A_LoopFileName, 1, StrLen(A_LoopFileName) - StrLen(A_LoopFileExt) - 1)
-            shellLink.SetTitle(title)
-        } else {
-            shellLink.SetTitle(A_LoopFileName)
-        }
-        shellLink.SetDescription(A_LoopFileName)
-        shellLink.SetPath(A_LoopFileFullPath)
-        shellLink.Commit
-        recentCol.AddObject(shellLink.comObj)
+        recentArray.Push({
+            name: A_LoopFileName,
+            ext: A_LoopFileExt,
+            path: A_LoopFileFullPath,
+            created: A_LoopFileTimeCreated
+        })
     }
-    jumpList.AppendCategory("最近", recentCol.comObj)
+    recentArray.Sort("N R", "created")
+
+    if recentArray.Length > 6 {
+        loop recentArray.Length - 6
+        {
+            FileDelete(recentArray[-A_Index].path)
+        }
+        recentArray.RemoveAt(7, recentArray.Length - 6)
+    }
+
+    if recentArray.Length > 0 {
+        recentCol := IObjectCollection()
+        for file in recentArray
+        {
+            shellLink := IShellLink()
+            if file.ext != "" {
+                title := SubStr(file.Name, 1, StrLen(file.name) - StrLen(file.ext) - 1)
+                shellLink.SetTitle(title)
+            } else {
+                shellLink.SetTitle(file.name)
+            }
+            shellLink.SetDescription(file.name)
+            shellLink.SetPath(file.path)
+            shellLink.Commit
+            recentCol.AddObject(shellLink.comObj)
+        }
+        jumpList.AppendCategory("最近", recentCol.comObj)
+    }
 
     jumpList.CommitList
 }
