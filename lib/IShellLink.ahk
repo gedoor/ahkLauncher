@@ -6,6 +6,9 @@ class IShellLink {
     static CLSID := "{00021401-0000-0000-C000-000000000046}"
     static IID := "{000214F9-0000-0000-C000-000000000046}"
 
+    static PKEY_Title := DllUtils.DEFINE_PROPERTYKEY("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}", 2)
+    static PKEY_AppUserModel_ID := DllUtils.DEFINE_PROPERTYKEY("{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}", 5)
+
     static Call(comObj?) {
         return super.Call(comObj?)
     }
@@ -30,21 +33,42 @@ class IShellLink {
     }
 
     ; IPersistFile
+    /**
+     * 确定对象自上次保存到其当前文件以来是否已更改。
+     * @returns {BOOL}
+     */
     IsDirty()
     {
         return ComCall(4, this.PersistFile)
     }
+    /**
+     * 打开指定文件并从文件内容初始化对象。
+     * @param {String} pszFileName 要打开的文件的绝对路径。
+     * @param {Integer} dwMode 打开文件时要使用的访问模式。 可能的值取自 STGM 枚举。 方法可以将此值视为建议，并在必要时添加更严格的权限。 如果 dwMode 为 0，则实现应使用用户打开文件时使用的任何默认权限打开文件。
+     * @returns 是否成功
+     */
     Load(Filename, Mode)
     {
         return ComCall(5, this.PersistFile, "str", FileName, "int", Mode, "int", 0)
     }
-    Save(Filename, fRemember)
+    /**
+     * 将 对象的副本保存到指定文件。如.lnk
+     * @param {String} pszFileName 对象应保存到的文件的绝对路径。 如果 pszFileName 为 NULL，则 对象应将其数据保存到当前文件（如果有）。
+     * @param {BOOL} fRemember 指示 pszFileName 参数是否用作当前工作文件。 如果为 TRUE，则 pszFileName 将成为当前文件，并且对象应在保存后清除其脏标志。 如果 为 FALSE，则此保存操作是将 副本另存为 ... 操作。 在这种情况下，当前文件保持不变，对象不应清除其脏标志。 如果 pszFileName 为 NULL，则实现应忽略 fRemember 标志。
+     * @returns 是否成功
+     */
+    Save(pszFileName, fRemember)
     {
-        return ComCall(6, this.PersistFile, "str", FileName, "int", fRemember, "int", 0)
+        return ComCall(6, this.PersistFile, "str", pszFileName, "int", fRemember, "int", 0)
     }
-    SaveCompleted(Filename)
+    /**
+     * 通知该对象它可以写入它的文件。 它通过通知对象可以从 NoScribble 模式还原 (，在该模式中，它不得写入其文件) ，到可以) 的普通模式 (。 组件在收到 IPersistFile：：Save 调用时进入 NoScribble 模式。
+     * @param {String} pszFileName 先前保存对象的文件的绝对路径。
+     * @returns 是否成功
+     */
+    SaveCompleted(pszFileName)
     {
-        return ComCall(7, this.PersistFile, "str", FileName, "int", 0)
+        return ComCall(7, this.PersistFile, "str", pszFileName, "int", 0)
     }
     ; IShellLink
     QueryInterface(riid)
@@ -55,7 +79,7 @@ class IShellLink {
 
     GetDescription()
     {
-        VarSetStrCapacity(&description, 64) 
+        VarSetStrCapacity(&description, 64)
         ComCall(06, this, "str", description, "int", 64)
         return description
     }
@@ -100,12 +124,16 @@ class IShellLink {
         return ComCall(20, this, "str", path)
     }
 
+    ; IPropertyStore
+
     SetTitle(title) {
-        PKEY_Title := DllUtils.DEFINE_PROPERTYKEY("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}", 2)
-        this.SetValue(PKEY_Title, DllUtils.InitVariantFromString(title))
+        this.SetValue(IShellLink.PKEY_Title, DllUtils.InitVariantFromString(title))
     }
 
-    ; IPropertyStore
+    SetAppUserModelID(appId) {
+        this.SetValue(IShellLink.PKEY_AppUserModel_ID, DllUtils.InitVariantFromString(appId))
+    }
+
     GetCount()
     {
         ComCall(3, this.PropertyStore, "int*", &cProps := 0)
@@ -119,9 +147,9 @@ class IShellLink {
     }
     GetValue(PROPERTYKEY)
     {
-        VarSetStrCapacity(&PROPVARIANT, 8 + 2 * A_PtrSize)
-        ComCall(5, this.PropertyStore, "ptr", PROPERTYKEY.ptr, "ptr", StrPtr(PROPVARIANT))
-        return PROPVARIANT
+        VarSetStrCapacity(&value, 1024)
+        result := ComCall(5, this.PropertyStore, "ptr", PROPERTYKEY.ptr, "ptr", StrPtr(value))
+        return value
     }
     SetValue(key, variant)
     {

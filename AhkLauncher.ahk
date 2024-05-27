@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 #NoTrayIcon
+#Include lib\AppUtils.ahk
 #Include lib\ICustomDestinationList.ahk
 #Include lib\IShellLink.ahk
 #Include lib\IObjectCollection.ahk
@@ -30,8 +31,19 @@ Send "^!+{F20}"
 
 Run A_AhkPath " launchMenu.ahk show"
 
-upJumpList()
+appLnk := A_ScriptDir "\AhkLauncher.lnk"
 
+if not FileExist(appLnk){
+    appLnk := A_ScriptDir "\AhkLauncher.lnk"
+    shellLink := IShellLink()
+    shellLink.SetPath(A_ScriptDir "\AhkLauncher.exe")
+    shellLink.SetTitle("AhkLauncher")
+    shellLink.SetIconLocation(A_ScriptDir "\res\launcher.ico", 0)
+    shellLink.Commit()
+    shellLink.Save(appLnk, true)
+}
+
+upJumpList()
 
 SelectLaunchDir() {
     SelectedFolder := DirSelect(, 0, "选择导航文件夹")
