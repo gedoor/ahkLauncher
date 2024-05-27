@@ -1,3 +1,4 @@
+#Requires AutoHotkey v2.0
 #Include DllUtils.ahk
 
 class IShellLink {
@@ -16,6 +17,11 @@ class IShellLink {
             this.comObj := comObj
         } else {
             this.comObj := ComObject(IShellLink.CLSID, IShellLink.IID)
+        }
+        if IsNumber(this.comObj) {
+            this.Ptr := this.comObj
+        } else {
+            this.Ptr := this.comObj.Ptr
         }
         IPersistFileIID := "{0000010b-0000-0000-C000-000000000046}"
         this.PersistFile := this.QueryInterface(DllUtils.IIDFromString(IPersistFileIID))
@@ -43,55 +49,55 @@ class IShellLink {
     ; IShellLink
     QueryInterface(riid)
     {
-        ComCall(0, this.comObj, "ptr", riid.ptr, "ptr*", &pinterface := 0)
+        ComCall(0, this, "ptr", riid.ptr, "ptr*", &pinterface := 0)
         return pinterface
     }
 
     GetDescription()
     {
         VarSetStrCapacity(&description, 64) 
-        ComCall(06, this.comObj, "str", description, "int", 64)
+        ComCall(06, this, "str", description, "int", 64)
         return description
     }
 
     SetDescription(description)
     {
-        return ComCall(07, this.comObj, "str", description)
+        return ComCall(07, this, "str", description)
     }
 
     SetWorkingDirectory(dir)
     {
-        return ComCall(09, this.comObj, "str", dir)
+        return ComCall(09, this, "str", dir)
     }
 
     SetArguments(args)
     {
-        return ComCall(11, this.comObj, "str", args)
+        return ComCall(11, this, "str", args)
     }
 
     SetHotkey(hotkey)
     {
-        return ComCall(13, this.comObj, "short", hotkey)
+        return ComCall(13, this, "short", hotkey)
     }
 
     SetShowCmd(cmd)
     {
-        return ComCall(15, this.comObj, "int", cmd)
+        return ComCall(15, this, "int", cmd)
     }
 
     SetIconLocation(path, index)
     {
-        return ComCall(17, this.comObj, "str", path, "int", index)
+        return ComCall(17, this, "str", path, "int", index)
     }
 
     SetRelativePath(path)
     {
-        return ComCall(18, this.comObj, "str", path, "uint", 0) ; msdn: param 2 is reserved
+        return ComCall(18, this, "str", path, "uint", 0) ; msdn: param 2 is reserved
     }
 
     SetPath(path)
     {
-        return ComCall(20, this.comObj, "str", path)
+        return ComCall(20, this, "str", path)
     }
 
     SetTitle(title) {

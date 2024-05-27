@@ -51,13 +51,13 @@ upJumpList() {
     shellLink.SetTitle("打开应用文件夹")
     shellLink.SetPath(A_ScriptDir)
     shellLink.Commit
-    taskCol.AddObject(shellLink.comObj)
+    taskCol.AddObject(shellLink)
 
     shellLink := IShellLink()
     shellLink.SetTitle("打开导航文件夹")
     shellLink.SetPath(A_ScriptDir "\launchDir.lnk")
     shellLink.Commit
-    taskCol.AddObject(shellLink.comObj)
+    taskCol.AddObject(shellLink)
 
     shellLink := IShellLink()
     shellLink.SetTitle("设置导航文件夹")
@@ -65,7 +65,7 @@ upJumpList() {
     shellLink.SetPath(A_AhkPath)
     shellLink.SetArguments(A_ScriptFullPath " setDir")
     shellLink.Commit
-    taskCol.AddObject(shellLink.comObj)
+    taskCol.AddObject(shellLink)
 
     shellLink := IShellLink()
     shellLink.SetTitle("刷新导航菜单")
@@ -73,11 +73,11 @@ upJumpList() {
     shellLink.SetPath(A_AhkPath)
     shellLink.SetArguments(A_ScriptFullPath " reload")
     shellLink.Commit
-    taskCol.AddObject(shellLink.comObj)
+    taskCol.AddObject(shellLink)
 
     jumpList := ICustomDestinationList()
     jumpList.BeginList(&MinSlots, &removedCol)
-    jumpList.AddUserTasks(taskCol.comObj)
+    jumpList.AddUserTasks(taskCol)
 
     removedCount := removedCol.GetCount()
     loop removedCount
@@ -123,9 +123,9 @@ upJumpList() {
             shellLink.SetDescription(file.name)
             shellLink.SetPath(file.path)
             shellLink.Commit
-            recentCol.AddObject(shellLink.comObj)
+            recentCol.AddObject(shellLink)
         }
-        jumpList.AppendCategory("最近", recentCol.comObj)
+        jumpList.AppendCategory("最近", recentCol)
     }
 
     jumpList.CommitList

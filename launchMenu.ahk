@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Ignore
+#Include lib\ThemeUtils.ahk
 #Include lib\util.ahk
 
 ;@Ahk2Exe-SetMainIcon res\launcher.ico
@@ -71,7 +72,7 @@ showLauncherMenu() {
     if mouseY > wBottom {
         menu_y := wBottom
     }
-
+    ThemeUtils.darkMenuMode(ThemeUtils.SysIsDarkMode)
     launcherMenu.Show(menu_x, menu_y)
 }
 

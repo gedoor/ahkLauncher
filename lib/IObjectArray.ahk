@@ -1,3 +1,4 @@
+#Requires AutoHotkey v2.0
 #Include DllUtils.ahk
 
 class IObjectArray {
@@ -18,20 +19,26 @@ class IObjectArray {
         } else {
             this.comObj := ComObject(IObjectArray.CLSID, IObjectArray.IID)
         }
+        if IsNumber(this.comObj) {
+            this.Ptr := this.comObj
+        } else {
+            this.Ptr := this.comObj.Ptr
+        }
+        
     }
 
     QueryInterface(&IID, &pobject)
     {
-        return ComCall(0, this.comObj, "ptr", IID.ptr, "ptr*", pobject)
+        return ComCall(0, this, "ptr", IID.ptr, "ptr*", pobject)
     }
     GetCount()
     {
-        ComCall(3, this.comObj, "uint*", &count := 0)
+        ComCall(3, this, "uint*", &count := 0)
         return count
     }
     GetAt(Index, type)
     {
-        ComCall(4, this.comObj, "uint", Index, "ptr", type.ptr, "ptr*", &pVoid := 0)
+        ComCall(4, this, "uint", Index, "ptr", type.ptr, "ptr*", &pVoid := 0)
         return pVoid
     }
 }

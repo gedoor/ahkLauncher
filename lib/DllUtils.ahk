@@ -1,3 +1,5 @@
+#Requires AutoHotkey v2.0
+
 class DllUtils {
 
     static IIDFromString(IIDStr) {
