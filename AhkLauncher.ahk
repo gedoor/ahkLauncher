@@ -3,8 +3,9 @@
 #NoTrayIcon
 #Include lib\AppUtils.ahk
 #Include lib\JumpList.ahk
-
+;@Ahk2Exe-SetMainIcon res\launcher.ico
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
+KeyHistory(0)
 
 for arg in A_Args {
     switch arg {

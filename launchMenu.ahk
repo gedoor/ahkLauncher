@@ -4,15 +4,17 @@
 #Include lib\JumpList.ahk
 #Include lib\ThemeUtils.ahk
 #Include lib\TreeMenuUtils.ahk
-
+AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 ;@Ahk2Exe-SetMainIcon res\launcher.ico
-
+KeyHistory(0)
 CoordMode "Mouse", "Screen"
 CoordMode "Menu", "Screen"
 
 TraySetIcon("res\launcher.ico")
 A_IconTip := "导航菜单"
 A_TrayMenu.Delete()
+A_TrayMenu.Add("open", TrayMenuCallback)
+A_TrayMenu.Default := "open"
 A_TrayMenu.Add("Reload", TrayMenuCallback)
 A_TrayMenu.Add("Exit", TrayMenuCallback)
 A_TrayMenu.Add()
@@ -43,7 +45,6 @@ launcherMenu := createDirTreeMenu(launcTree, IconSize, LauncherMenuCallback)
 
 A_TrayMenu.Add()
 A_TrayMenu.Add("Launcher", launcherMenu)
-A_TrayMenu.Default := "Launcher"
 
 for arg in A_Args {
     if arg = "show"
@@ -108,6 +109,12 @@ LauncherMenuCallback(ItemName, ItemPos, MyMenu) {
 
 TrayMenuCallback(ItemName, ItemPos, MyMenu) {
     switch ItemName, false {
+        case "open":
+            MsgBox(
+                "这是一个将文件夹显示为导航菜单的应用,因为trueLuanchBar不更新了,对win11支持不好,所以开发了这个应用.",
+                "AhkLuncher",
+                "Iconi"
+            )
         case "Reload":
             Reload
         case "Exit":
