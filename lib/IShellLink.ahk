@@ -120,8 +120,16 @@ class IShellLink {
         return ComCall(20, this, "str", path)
     }
 
+    GetTitle() {
+        return this.GetValue(IShellLink.PKEY_Title)
+    }
+
     SetTitle(title) {
         this.SetValue(IShellLink.PKEY_Title, DllUtils.InitVariantFromString(title))
+    }
+
+    GetAppUserModelID(){
+        return this.GetValue(IShellLink.PKEY_AppUserModel_ID)
     }
 
     SetAppUserModelID(appId) {
@@ -143,9 +151,8 @@ class IShellLink {
     }
     GetValue(PROPERTYKEY)
     {
-        VarSetStrCapacity(&value, 1024)
-        result := ComCall(5, this.PropertyStore, "ptr", PROPERTYKEY.ptr, "ptr", StrPtr(value))
-        return value
+        result := ComCall(5, this.PropertyStore, "ptr", PROPERTYKEY.ptr, "ptr", value := Buffer(64))
+        return StrGet(value)
     }
     SetValue(key, variant)
     {

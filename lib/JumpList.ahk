@@ -18,13 +18,13 @@ class JumpList {
         shellLink := IShellLink()
         shellLink.SetTitle("打开应用文件夹")
         shellLink.SetPath(A_ScriptDir)
-        shellLink.Commit
+        shellLink.Commit()
         taskCol.AddObject(shellLink)
     
         shellLink := IShellLink()
         shellLink.SetTitle("打开导航文件夹")
         shellLink.SetPath(A_ScriptDir "\launchDir.lnk")
-        shellLink.Commit
+        shellLink.Commit()
         taskCol.AddObject(shellLink)
     
         shellLink := IShellLink()
@@ -32,7 +32,7 @@ class JumpList {
         shellLink.SetIconLocation(A_ScriptDir "\RES\CONFIG.ICO", 0)
         shellLink.SetPath(A_AhkPath)
         shellLink.SetArguments(A_ScriptFullPath " setDir")
-        shellLink.Commit
+        shellLink.Commit()
         taskCol.AddObject(shellLink)
     
         shellLink := IShellLink()
@@ -40,7 +40,7 @@ class JumpList {
         shellLink.SetIconLocation(A_ScriptDir "\RES\REFRESH.ICO", 0)
         shellLink.SetPath(A_AhkPath)
         shellLink.SetArguments(A_ScriptFullPath " reload")
-        shellLink.Commit
+        shellLink.Commit()
         taskCol.AddObject(shellLink)
     
         jumpList := ICustomDestinationList()
@@ -93,7 +93,7 @@ class JumpList {
                 }
                 shellLink.SetDescription(file.name)
                 shellLink.SetPath(file.path)
-                shellLink.Commit
+                shellLink.Commit()
                 recentCol.AddObject(shellLink)
             }
             jumpList.AppendCategory("最近", recentCol)
