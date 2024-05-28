@@ -3,7 +3,7 @@
 #Include lib\AppUtils.ahk
 #Include lib\JumpList.ahk
 #Include lib\ThemeUtils.ahk
-#Include lib\util.ahk
+#Include lib\TreeMenuUtils.ahk
 
 ;@Ahk2Exe-SetMainIcon res\launcher.ico
 
@@ -23,7 +23,7 @@ A_TrayMenu.Add("OpenAppDir", TrayMenuCallback)
 launcherLnk := A_ScriptDir "\launchDir.lnk"
 
 if !FileExist(launcherLnk) {
-    SelectLaunchDir()
+    AppUtils.SelectLaunchDir()
 }
 
 FileGetShortcut launcherLnk, &launcherPath
@@ -113,23 +113,12 @@ TrayMenuCallback(ItemName, ItemPos, MyMenu) {
         case "Exit":
             ExitApp
         case "SelectLaunchDir":
-            if SelectLaunchDir() {
+            if AppUtils.SelectLaunchDir() {
                 Reload
             }
         case "OpenLaunchDir":
             Run launcherLnk
         case "OpenAppDir":
             Run "explore " A_ScriptDir
-    }
-}
-
-
-SelectLaunchDir() {
-    SelectedFolder := DirSelect(, 0, "选择导航文件夹")
-    if SelectedFolder {
-        FileCreateShortcut SelectedFolder, A_ScriptDir "\launchDir.lnk"
-        return true
-    } else {
-        return false
     }
 }

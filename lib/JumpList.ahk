@@ -7,6 +7,10 @@
 
 class JumpList {
 
+    /**
+     * 更新任务栏跳转列表
+     * @param {String} appId AppUserModelID
+     */
     static up(appId?){
 
         taskCol := IObjectCollection()

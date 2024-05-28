@@ -2,6 +2,31 @@ AppUserModelID := "legado.ahk.launcher"
 
 class AppUtils {
 
+    static createAppLnk() {
+        appLnk := A_ScriptDir "\AhkLauncher.lnk"
+
+        if not FileExist(appLnk) {
+            shellLink := IShellLink()
+            shellLink.SetPath(A_ScriptDir "\AhkLauncher.exe")
+            shellLink.SetWorkingDirectory(A_ScriptDir)
+            shellLink.SetTitle("AhkLauncher")
+            shellLink.SetIconLocation(A_ScriptDir "\res\launcher.ico", 0)
+            shellLink.SetAppUserModelID(AppUserModelID)
+            shellLink.Commit()
+            shellLink.Save(appLnk, true)
+        }
+    }
+
+    static SelectLaunchDir() {
+        SelectedFolder := DirSelect(, 0, "选择导航文件夹")
+        if SelectedFolder {
+            FileCreateShortcut SelectedFolder, A_ScriptDir "\launchDir.lnk"
+            return true
+        } else {
+            return false
+        }
+    }
+
     static SetCurrentProcessExplicitAppUserModelID(appId) {
         DllCall("Shell32.dll\SetCurrentProcessExplicitAppUserModelID", "str", appId)
     }
