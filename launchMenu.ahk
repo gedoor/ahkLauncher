@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Ignore
+#Include lib\AppUtils.ahk
+#Include lib\JumpList.ahk
 #Include lib\ThemeUtils.ahk
 #Include lib\util.ahk
 
@@ -101,7 +103,7 @@ LauncherMenuCallback(ItemName, ItemPos, MyMenu) {
 
         }
     }
-    
+    JumpList.up(AppUserModelID)
 }
 
 TrayMenuCallback(ItemName, ItemPos, MyMenu) {
@@ -120,6 +122,7 @@ TrayMenuCallback(ItemName, ItemPos, MyMenu) {
             Run "explore " A_ScriptDir
     }
 }
+
 
 SelectLaunchDir() {
     SelectedFolder := DirSelect(, 0, "选择导航文件夹")

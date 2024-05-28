@@ -2,12 +2,11 @@ AppUserModelID := "legado.ahk.launcher"
 
 class AppUtils {
 
-
-    static SetCurrentProcessExplicitAppUserModelID(appId){
+    static SetCurrentProcessExplicitAppUserModelID(appId) {
         DllCall("Shell32.dll\SetCurrentProcessExplicitAppUserModelID", "str", appId)
     }
 
-    static GetCurrentProcessExplicitAppUserModelID(){
+    static GetCurrentProcessExplicitAppUserModelID() {
         DllCall("Shell32.dll\GetCurrentProcessExplicitAppUserModelID", "ptr*", &x := 0)
         if x = 0 {
             return ""
@@ -16,7 +15,7 @@ class AppUtils {
         DllCall("Ole32.dll\CoTaskMemFree", "ptr", x)
         return appId
     }
-    
+
     static GetCurrentApplicationUserModelId() {
         rc := DllCall('GetCurrentApplicationUserModelId', 'UInt*', &length := 0, 'Ptr', 0)
 
@@ -48,5 +47,5 @@ class AppUtils {
         }
         MsgBox(StrGet(fullName))
     }
-    
+
 }
