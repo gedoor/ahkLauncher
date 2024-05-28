@@ -53,7 +53,7 @@ class JumpList {
         removedCount := removedCol.GetCount()
         loop removedCount
         {
-            rsl := IShellLink(removedCol.GetAt(A_Index - 1, IShellLink.Type))
+            rsl := IShellLink(ComValue(0xD, removedCol.GetAt(A_Index - 1, IShellLink.Type)))
             fileName := rsl.GetDescription()
             FileDelete(A_ScriptDir "\recent\" fileName)
         }

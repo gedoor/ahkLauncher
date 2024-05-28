@@ -28,7 +28,7 @@ class ICustomDestinationList {
     BeginList(&MinSlots, &removedCol)
     {
         result := ComCall(04, this, "uint*", &MinSlots := 0, "ptr", IObjectArray.Type.ptr, "ptr*", &ppv := 0)
-        removedCol := IObjectArray(ppv)
+        removedCol := IObjectArray(ComValue(0xD, ppv))
         return result
     }
 
@@ -76,7 +76,7 @@ class ICustomDestinationList {
     GetRemovedDestinations()
     {
         ComCall(09, this, "ptr", IObjectArray.Type.ptr, "ptr*", &out)
-        return IObjectArray(out)
+        return IObjectArray(ComValue(0xD, out))
     }
 
     /**

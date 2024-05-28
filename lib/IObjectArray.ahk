@@ -19,12 +19,7 @@ class IObjectArray {
         } else {
             this.comObj := ComObject(IObjectArray.CLSID, IObjectArray.IID)
         }
-        if IsNumber(this.comObj) {
-            this.Ptr := this.comObj
-        } else {
-            this.Ptr := this.comObj.Ptr
-        }
-        
+        this.Ptr := this.comObj.Ptr
     }
 
     QueryInterface(&IID, &pobject)

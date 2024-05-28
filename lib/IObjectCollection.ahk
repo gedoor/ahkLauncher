@@ -16,11 +16,7 @@ class IObjectCollection extends IObjectArray {
         } else {
             this.comObj := ComObject(IObjectCollection.CLSID, IObjectCollection.IID)
         }
-        if IsNumber(this.comObj) {
-            this.Ptr := this.comObj
-        } else {
-            this.Ptr := this.comObj.Ptr
-        }
+        this.Ptr := this.comObj.Ptr
     }
 
     ; IObjectCollection

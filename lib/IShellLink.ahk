@@ -21,15 +21,11 @@ class IShellLink {
         } else {
             this.comObj := ComObject(IShellLink.CLSID, IShellLink.IID)
         }
-        if IsNumber(this.comObj) {
-            this.Ptr := this.comObj
-        } else {
-            this.Ptr := this.comObj.Ptr
-        }
+        this.Ptr := this.comObj.Ptr
         IPersistFileIID := "{0000010b-0000-0000-C000-000000000046}"
-        this.PersistFile := this.QueryInterface(DllUtils.IIDFromString(IPersistFileIID))
+        this.PersistFile := ComObjQuery(this.Ptr, IPersistFileIID)
         IPropertyStoreIID := "{886d8eeb-8cf2-4446-8d02-cdba1dbdcf99}"
-        this.PropertyStore := this.QueryInterface(DllUtils.IIDFromString(IPropertyStoreIID))
+        this.PropertyStore := ComObjQuery(this.Ptr, IPropertyStoreIID)
     }
 
     ; IPersistFile
@@ -124,8 +120,6 @@ class IShellLink {
         return ComCall(20, this, "str", path)
     }
 
-    ; IPropertyStore
-
     SetTitle(title) {
         this.SetValue(IShellLink.PKEY_Title, DllUtils.InitVariantFromString(title))
     }
@@ -133,6 +127,8 @@ class IShellLink {
     SetAppUserModelID(appId) {
         this.SetValue(IShellLink.PKEY_AppUserModel_ID, DllUtils.InitVariantFromString(appId))
     }
+
+    ; IPropertyStore
 
     GetCount()
     {
