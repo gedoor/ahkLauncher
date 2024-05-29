@@ -151,8 +151,8 @@ class IShellLink {
     }
     GetValue(PROPERTYKEY)
     {
-        result := ComCall(5, this.PropertyStore, "ptr", PROPERTYKEY.ptr, "ptr", value := Buffer(64))
-        return StrGet(value)
+        result := ComCall(5, this.PropertyStore, "ptr", PROPERTYKEY.ptr, "ptr", ptr := Buffer(16))
+        return StrGet(NumGet(ptr, 8, "ptr"))
     }
     SetValue(key, variant)
     {
