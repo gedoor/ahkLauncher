@@ -51,10 +51,20 @@ for arg in A_Args {
         showLauncherMenu()
 }
 
-^!+F20:: showLauncherMenu()
-^!+F21:: Reload()
+OnMessage(AppMsgNum, MsgCallback)
+
+Persistent true
 
 return
+
+MsgCallback(wParam, lParam, msg, hwnd){
+    switch wParam {
+        case 1111:
+            showLauncherMenu()
+        case 1112:
+            Reload()
+    }
+}
 
 showLauncherMenu() {
     if not IsSet(launcherMenu)

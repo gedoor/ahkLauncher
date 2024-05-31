@@ -1,4 +1,5 @@
 AppUserModelID := "legado.ahk.launcher"
+AppMsgNum := DllCall("RegisterWindowMessage", "Str", "AhkLauncher")
 
 class AppUtils {
 

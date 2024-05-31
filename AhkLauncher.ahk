@@ -6,6 +6,7 @@
 ;@Ahk2Exe-SetMainIcon res\launcher.ico
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 KeyHistory(0)
+DetectHiddenWindows True
 
 for arg in A_Args {
     switch arg {
@@ -21,15 +22,21 @@ for arg in A_Args {
             }
         case "reload":
             {
-                Send "^!+{F21}"
+                try {
+                    PostMessage(AppMsgNum, 1112, 1112, , "launchMenu.ahk - AutoHotkey")
+                } catch {
+                    Run A_AhkPath " launchMenu.ahk"
+                }
                 ExitApp
             }
     }
 }
 
-Send "^!+{F20}"
-
-Run A_AhkPath " launchMenu.ahk show"
+try {
+    PostMessage(AppMsgNum, 1111, 1111, , "launchMenu.ahk - AutoHotkey")
+} catch {
+    Run A_AhkPath " launchMenu.ahk show"
+}
 
 AppUtils.createAppLnk()
 
