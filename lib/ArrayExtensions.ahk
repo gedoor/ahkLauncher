@@ -26,10 +26,9 @@
     Array.Flat()                            => Turns a nested array into a one-level array.
     Array.Extend(arr)                       => Adds the contents of another array to the end of this one.
 */
+Array.Prototype.base := ArrayExtensions
 
-Array.Prototype.base := Array2
-
-class Array2 {
+class ArrayExtensions {
     /**
      * Returns a section of the array from 'start' to 'end', optionally skipping elements with 'step'.
      * Modifies the original array.
