@@ -4,6 +4,7 @@
 #Include lib\JumpList.ahk
 #Include lib\ThemeUtils.ahk
 #Include lib\TreeMenuUtils.ahk
+#Include lib\Utils.ahk
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 ;@Ahk2Exe-SetMainIcon res\launcher.ico
 KeyHistory(0)
@@ -41,6 +42,10 @@ try {
     return
 }
 
+scriptMenu := Menu()
+A_TrayMenu.Add
+A_TrayMenu.Add("Script", scriptMenu)
+
 launcherMenu := createDirTreeMenu(launcTree, IconSize, LauncherMenuCallback)
 
 A_TrayMenu.Add()
@@ -51,13 +56,24 @@ for arg in A_Args {
         showLauncherMenu()
 }
 
+loop files A_ScriptDir "\ux\*.ahk"
+{
+    actionMenu := Menu()
+    actionMenu.DefineProp("data", { Value: { filePath: A_LoopFileFullPath, fileName: A_LoopFileName } })
+    actionMenu.Add("运行", scriptMenuCallback)
+    actionMenu.Add("重载", scriptMenuCallback)
+    actionMenu.Add("退出", scriptMenuCallback)
+    menuName := SubStr(A_LoopFileName, 1, StrLen(A_LoopFileName) - 4)
+    scriptMenu.Add(menuName, actionMenu)
+}
+
 OnMessage(AppMsgNum, MsgCallback)
 
 Persistent true
 
 return
 
-MsgCallback(wParam, lParam, msg, hwnd){
+MsgCallback(wParam, lParam, msg, hwnd) {
     switch wParam {
         case 1111:
             showLauncherMenu()
@@ -90,7 +106,7 @@ showLauncherMenu() {
 }
 
 LauncherMenuCallback(ItemName, ItemPos, MyMenu) {
-    rPath := MyMenu.files[ItemPos].path
+    rPath := MyMenu.data[ItemPos].path
     if not DirExist("recent") {
         DirCreate("recent")
     }
@@ -115,6 +131,17 @@ LauncherMenuCallback(ItemName, ItemPos, MyMenu) {
         }
     }
     JumpList.up(AppUserModelID)
+}
+
+scriptMenuCallback(ItemName, ItemPos, MyMenu) {
+    switch ItemPos {
+        case 1:
+            Run A_AhkPath " " MyMenu.data.filePath
+        case 2:
+            Utils.sendCmd("重启", MyMenu.data.fileName)
+        case 3:
+            Utils.sendCmd("退出", MyMenu.data.fileName)
+    }
 }
 
 TrayMenuCallback(ItemName, ItemPos, MyMenu) {

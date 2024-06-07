@@ -11,7 +11,7 @@ createDirTreeMenu(dirTree, iconSize, callback) {
         }
         lMenu.SetIcon(A_Index "&", item.icon.path, item.icon.num + 1, iconSize)
     }
-    lMenu.DefineProp("files", { Value: dirTree })
+    lMenu.DefineProp("data", { Value: dirTree })
     return lMenu
 }
 

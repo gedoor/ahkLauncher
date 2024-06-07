@@ -1,4 +1,5 @@
 #Requires AutoHotkey v2.0
+#NoTrayIcon
 ; Easy Window Dragging -- KDE style (based on the v1 script by Jonny) 
 ; https://www.autohotkey.com
 ; This script makes it much easier to move or resize a window: 1) Hold down
