@@ -5,13 +5,16 @@
 #Include ..\lib\Utils.ahk
 DetectHiddenWindows True
 
+processArray := Array()
+
 myGui := Gui()
-myGui.Title := "ahk脚本进程管理"
+myGui.Title := "AHK脚本进程管理"
 lv := myGui.AddListView("r20 w700", ["Name"])
 lv.OnEvent("ContextMenu", Ctrl_ContextMenu)
 
 myGui.Opt("+MaxSizex200 +MaxSizey200")
 myGui.Show()
+myGui.OnEvent("Close", Gui_Close)
 
 upAhkProcess()
 
@@ -19,19 +22,26 @@ cMenu := Menu()
 cMenu.DefineProp("data", { Value: "" })
 cMenu.Add("结束", LvMenuCallback)
 
+SetTimer(upAhkProcess, 10000)
+
 upAhkProcess() {
-    global HWNDs
     HWNDs := WinGetList(".ahk - AutoHotkey")
-    lv.Opt("-Redraw")
-    lv.Delete()
-    for item in HWNDs {
-        lv.Add(, WinGetTitle("ahk_id " item))
+    for item in processArray {
+        if HWNDs.IndexOf(item) == 0 {
+            processArray.RemoveAt(A_Index)
+            lv.Delete(A_Index)
+        }
     }
-    lv.Opt("+Redraw")
+    for item in HWNDs {
+        if processArray.IndexOf(item) == 0 {
+            processArray.Push(item)
+            lv.Add(, WinGetTitle("ahk_id " item))
+        }
+    }
 }
 
 Ctrl_ContextMenu(GuiCtrlObj, Item, IsRightClick, X, Y) {
-    cMenu.data := HWNDs[Item]
+    cMenu.data := processArray[Item]
     cMenu.Show()
 }
 
@@ -40,11 +50,15 @@ LvMenuCallback(ItemName, ItemPos, MyMenu) {
         case 1:
         {
             Utils.sendCmd("退出", "ahk_id " MyMenu.data)
-            index := HWNDs.IndexOf(MyMenu.data)
-            HWNDs.RemoveAt(index, 1)
+            index := processArray.IndexOf(MyMenu.data)
+            processArray.RemoveAt(index, 1)
             lv.Delete(index)
         }
         default:
 
     }
+}
+
+Gui_Close(GuiObj) {
+    ExitApp()
 }
