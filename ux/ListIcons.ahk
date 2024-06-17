@@ -74,12 +74,12 @@ class icons {
         IconSelectUserGui.IconSelectIndex := ""
         
         IconSelectUserGui.Add("Text","","File:")
-        ctl := IconSelectUserGui.Add("ComboBox","vIconFile x+m yp-3 w420",this.IconSelectFileList)
+        ctl := IconSelectUserGui.Add("ComboBox","vIconFile x+m yp-3 w400",this.IconSelectFileList)
         
         ctl.OnEvent("change",this.gui_events.Bind(this)) ; ObjBindMethod(this,"gui_events")
         ctl.Text := sIconFile
         
-        ctl := IconSelectUserGui.Add("Button","vPickFileBtn x+m yp w20","...")
+        ctl := IconSelectUserGui.Add("Button","vPickFileBtn x+m yp-2 w30","•••")
         ctl.OnEvent("click",this.gui_events.Bind(this))
         
         LV := IconSelectUserGui.Add("ListView","vIconList xm w480 h220 Icon")
