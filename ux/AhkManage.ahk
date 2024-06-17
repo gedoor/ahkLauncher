@@ -9,7 +9,7 @@ processArray := Array()
 
 myGui := Gui()
 myGui.Title := "AHK脚本进程管理"
-lv := myGui.AddListView("r20 w700", ["Name"])
+lv := myGui.AddListView("r20 w700 +NoSort", ["Name"])
 lv.OnEvent("ContextMenu", Ctrl_ContextMenu)
 
 myGui.Opt("+MaxSizex200 +MaxSizey200")
