@@ -1,8 +1,13 @@
+#Include IShellLink.ahk
+
 AppUserModelID := "legado.ahk.launcher"
 AppMsgNum := DllCall("RegisterWindowMessage", "Str", "AhkLauncher")
 
 class AppUtils {
 
+    /**
+     * 使用AppUserModelID创建App快捷方式
+     */
     static createAppLnk() {
         appLnk := A_ScriptDir "\AhkLauncher.lnk"
 
