@@ -1,4 +1,5 @@
 ;监控文件修改
+#NoTrayIcon
 #Include ..\lib\WatchFolder.ahk
 
 
