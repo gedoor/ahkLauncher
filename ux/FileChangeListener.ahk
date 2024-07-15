@@ -1,5 +1,6 @@
 ;监控文件修改
 #NoTrayIcon
+#SingleInstance Force
 #Include ..\lib\WatchFolder.ahk
 
 
@@ -13,6 +14,12 @@ FileChangeCallback(path, notifications) {
                 FileCopy(
                     "D:\Actionsoft\AWS\src\com\sy\common\file\web\page\fileManage.html",
                     "D:\Actionsoft\AWS\apps\install\com.awspaas.user.apps.file_manage\template\page\fileManage.html",
+                    true
+                )
+            case "D:\Actionsoft\AWS\src\com\sy\common\dwplus\web\js\dwPlus.js":
+                FileCopy(
+                    "D:\Actionsoft\AWS\src\com\sy\common\dwplus\web\js\dwPlus.js",
+                    "D:\Actionsoft\AWS\apps\install\com.awspaas.user.apps.common.dwplus\web\com.awspaas.user.apps.common.dwplus\js\dwPlus.js",
                     true
                 )
             default:

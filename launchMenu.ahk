@@ -44,18 +44,22 @@ try {
 
 launcherMenu := createDirTreeMenu(launcTree, IconSize, LauncherMenuCallback)
 
-scriptMenu := Menu()
-scriptMenu.DefineProp("data", { Value: Array() })
+loadAhkScript := IniRead(configIni, "config", "loadAhkScript", 0)
 
-loop files A_ScriptDir "\ux\*.*", "F"
-{
-    menuName := SubStr(A_LoopFileName, 1, StrLen(A_LoopFileName) - 4)
-    scriptMenu.Add(menuName, LauncherMenuCallback)
-    scriptMenu.data.Push({ path: A_LoopFileFullPath })
+if (loadAhkScript){
+    scriptMenu := Menu()
+    scriptMenu.DefineProp("data", { Value: Array() })
+    
+    loop files A_ScriptDir "\ux\*.*", "F"
+    {
+        menuName := SubStr(A_LoopFileName, 1, StrLen(A_LoopFileName) - 4)
+        scriptMenu.Add(menuName, LauncherMenuCallback)
+        scriptMenu.data.Push({ path: A_LoopFileFullPath })
+    }
+    
+    launcherMenu.Add("AhkScript", scriptMenu)
+    launcherMenu.SetIcon("AhkScript", A_AhkPath, 1, IconSize)
 }
-
-launcherMenu.Add("AhkScript", scriptMenu)
-launcherMenu.SetIcon("AhkScript", A_AhkPath, 1, IconSize)
 
 for arg in A_Args {
     if arg = "show"
@@ -138,11 +142,7 @@ LauncherMenuCallback(ItemName, ItemPos, MyMenu) {
 TrayMenuCallback(ItemName, ItemPos, MyMenu) {
     switch ItemName, false {
         case "open":
-            MsgBox(
-                "这是一个将文件夹显示为导航菜单的应用,因为trueLuanchBar不更新了,对win11支持不好,所以开发了这个应用.",
-                "AhkLuncher",
-                "Iconi"
-            )
+            Run A_AhkPath " Config.ahk"
         case "Reload":
             Reload
         case "Exit":

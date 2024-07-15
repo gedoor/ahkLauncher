@@ -2,6 +2,7 @@
 
 AppUserModelID := "legado.ahk.launcher"
 AppMsgNum := DllCall("RegisterWindowMessage", "Str", "AhkLauncher")
+configIni := A_ScriptDir "\Config.ini"
 
 class AppUtils {
 
