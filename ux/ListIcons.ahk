@@ -4,7 +4,8 @@
 icons.IconPicker()
 
 class icons {
-    Static IconSelectFileList := ["%SystemRoot%\explorer.exe",
+    Static IconSelectFileList := [
+        "%SystemRoot%\explorer.exe",
         "%SystemRoot%\system32\accessibilitycpl.dll",
         "%SystemRoot%\system32\SensorsCpl.dll",
         "%SystemRoot%\system32\ddores.dll",
