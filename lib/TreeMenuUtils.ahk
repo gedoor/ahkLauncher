@@ -64,17 +64,19 @@ getItemIcon(fPath) {
     if fExt = "lnk"
     {
         FileGetShortcut fPath, &OutTarget, , , , &OutIcon, &OutIconNum
-        SplitPath OutTarget, , , &OutTargetExt
-        if OutTargetExt = "exe" || OutTargetExt = "dll"
-            OutIconChoice := { path: OutTarget, num: 0 }
-        if (OutIcon && OutIconNum)
-            OutIconChoice := { path: OutIcon, num: (OutIconNum - 1) }
-        else {
-            ; Support shortcuts to folders with no custom icon set (default)
-            _attr := FileGetAttrib(OutTarget)
-            if (InStr(_attr, "D")) {
-                ; display default icon instead of blank file icon
-                OutIconChoice := { path: "imageres.dll", num: 4 }
+        if FileExist(OutTarget) {
+            SplitPath OutTarget, , , &OutTargetExt
+            if OutTargetExt = "exe" || OutTargetExt = "dll"
+                OutIconChoice := { path: OutTarget, num: 0 }
+            if (OutIcon && OutIconNum)
+                OutIconChoice := { path: OutIcon, num: (OutIconNum - 1) }
+            else {
+                ; Support shortcuts to folders with no custom icon set (default)
+                _attr := FileGetAttrib(OutTarget)
+                if (InStr(_attr, "D")) {
+                    ; display default icon instead of blank file icon
+                    OutIconChoice := { path: "imageres.dll", num: 4 }
+                }
             }
         }
     }
