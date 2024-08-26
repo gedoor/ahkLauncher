@@ -21,7 +21,7 @@ Constructor()
     isStartUp := FileExist(startUpLink) ? 1 : 0
     CheckBoxStartUp := myGui.Add("CheckBox", "x24 y56 w267 h23 Checked" isStartUp, "开机启动")
     loadAhkScript := IniRead(configIni, "config", "loadAhkScript", 0)
-    CheckBoxLoadAhkScript := myGui.Add("CheckBox", "x24 y86 w266 h23 Checked" loadAhkScript, "加载 AHK 脚本")
+    CheckBoxLoadAhkScript := myGui.Add("CheckBox", "x24 y86 w266 h23 Checked" loadAhkScript, "加载 AHK 脚本菜单")
     CheckBoxStartUp.OnEvent("Click", StartUpEventHandler)
     CheckBoxLoadAhkScript.OnEvent("Click", LoadAhkScriptEventHandler)
     myGui.OnEvent('Close', (*) => ExitApp())
