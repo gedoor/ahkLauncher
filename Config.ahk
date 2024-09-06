@@ -17,11 +17,13 @@ Constructor()
 {
     myGui := Gui()
     myGui.Title := "AhkLauncher配置"
-    myGui.Add("Text", "x24 y16 w546 h59", "这是一个将文件夹显示为导航菜单的应用,因为trueLuanchBar不更新了,对win11支持不好,所以开发了这个应用.")
+    myGui.AddText("x24 y16 w546 h59", "这是一个将文件夹显示为导航菜单的应用,因为trueLuanchBar不更新了,对win11支持不好,所以开发了这个应用.")
     isStartUp := FileExist(startUpLink) ? 1 : 0
-    CheckBoxStartUp := myGui.Add("CheckBox", "x24 y56 w267 h23 Checked" isStartUp, "开机启动")
+    CheckBoxStartUp := myGui.AddCheckbox("x24 y56 w100 h23 Checked" isStartUp, "开机启动")
     loadAhkScript := IniRead(configIni, "config", "loadAhkScript", 0)
-    CheckBoxLoadAhkScript := myGui.Add("CheckBox", "x24 y86 w266 h23 Checked" loadAhkScript, "加载 AHK 脚本菜单")
+    CheckBoxLoadAhkScript := myGui.AddCheckbox("x124 y56 w200 h23 Checked" loadAhkScript, "加载 AHK 脚本菜单")
+
+    
     CheckBoxStartUp.OnEvent("Click", StartUpEventHandler)
     CheckBoxLoadAhkScript.OnEvent("Click", LoadAhkScriptEventHandler)
     myGui.OnEvent('Close', (*) => ExitApp())
