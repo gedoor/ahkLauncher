@@ -22,13 +22,30 @@ Constructor()
     CheckBoxStartUp := myGui.AddCheckbox("x24 y56 w100 h23 Checked" isStartUp, "开机启动")
     loadAhkScript := IniRead(configIni, "config", "loadAhkScript", 0)
     CheckBoxLoadAhkScript := myGui.AddCheckbox("x124 y56 w200 h23 Checked" loadAhkScript, "加载 AHK 脚本菜单")
+    myGui.AddGroupBox("x24 y90 w560 h50", "导航文件夹")
 
-    
+    launcherLnk := A_ScriptDir "\launchDir.lnk"
+    launcherPath := ""
+    if FileExist(launcherLnk) {
+        FileGetShortcut launcherLnk, &launcherPath
+    }
+    editLuncherDir := myGui.AddEdit("x32 y106 w460 h23", launcherPath)
+    buttonLuncherDir := myGui.AddButton("x500 y106 w40 h23", "选择")
+
+    buttonLuncherDir.OnEvent("Click", SelectLaunchDirHandler)
+
     CheckBoxStartUp.OnEvent("Click", StartUpEventHandler)
     CheckBoxLoadAhkScript.OnEvent("Click", LoadAhkScriptEventHandler)
     myGui.OnEvent('Close', (*) => ExitApp())
 
-    StartUpEventHandler(*){
+    SelectLaunchDirHandler(*) {
+        launcherPath := AppUtils.SelectLaunchDir()
+        if (launcherPath) {
+            editLuncherDir.Text := launcherPath
+        }
+    }
+
+    StartUpEventHandler(*) {
         if (CheckBoxStartUp.Value) {
             createStartUpLink
         } else {
@@ -36,7 +53,7 @@ Constructor()
         }
     }
 
-    LoadAhkScriptEventHandler(*){
+    LoadAhkScriptEventHandler(*) {
         if (CheckBoxLoadAhkScript.Value) {
             IniWrite(1, configIni, "config", "loadAhkScript")
         } else {

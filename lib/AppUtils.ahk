@@ -28,9 +28,9 @@ class AppUtils {
         SelectedFolder := DirSelect(, 0, "选择导航文件夹")
         if SelectedFolder {
             FileCreateShortcut SelectedFolder, A_ScriptDir "\launchDir.lnk"
-            return true
+            return SelectedFolder
         } else {
-            return false
+            return ""
         }
     }
 
