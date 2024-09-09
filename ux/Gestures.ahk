@@ -12,10 +12,10 @@ gesture4 := HotGestures.Gesture("→:10,0|10,0|10,0|10,0|10,0|10,0|10,0|10,0|10,
 gesture5 := HotGestures.Gesture("↑↓:0,-10|0,-10|0,-10|0,-10|0,-10|0,-10|0,-10|0,-10|0,-10|0,-10|0,-10|0,10|0,10|0,10|0,10|0,10|0,10|0,10|0,10|0,10|0,10|0,10")
 
 hgs := HotGestures(0.1, 20)
-hgs.Register(gesture1, "Home")
-hgs.Register(gesture2, "End")
-hgs.Register(gesture3, "Browser Back")
-hgs.Register(gesture4, "Browser Forward")
+hgs.Register(gesture1, "Top")
+hgs.Register(gesture2, "Bottom")
+hgs.Register(gesture3, "Back")
+hgs.Register(gesture4, "Forward")
 hgs.Register(gesture5, "Refresh")
 
 rButtonDown := false
