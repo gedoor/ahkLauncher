@@ -10,6 +10,7 @@ AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 KeyHistory(0)
 CoordMode "Mouse", "Screen"
 CoordMode "Menu", "Screen"
+Persistent true
 
 TraySetIcon("res\launcher.ico")
 A_IconTip := "导航菜单"
@@ -50,7 +51,7 @@ if (loadAhkScript){
     scriptMenu := Menu()
     scriptMenu.DefineProp("data", { Value: Array() })
     
-    loop files A_ScriptDir "\ux\*.*", "F"
+    loop files A_ScriptDir "\ux\*.ahk", "F"
     {
         menuName := SubStr(A_LoopFileName, 1, StrLen(A_LoopFileName) - 4)
         scriptMenu.Add(menuName, LauncherMenuCallback)
@@ -71,7 +72,7 @@ A_TrayMenu.Add("Launcher", launcherMenu)
 
 OnMessage(AppMsgNum, MsgCallback)
 
-Persistent true
+Run '"' A_AhkPath '" "' A_ScriptDir '\Autorun.ahk"'
 
 return
 

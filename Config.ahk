@@ -2,6 +2,10 @@
 #SingleInstance Ignore
 #NoTrayIcon
 #Include lib\AppUtils.ahk
+#Include lib\Json.ahk
+#Include lib\ArrayExtensions.ahk
+#Include lib\Utils.ahk
+DetectHiddenWindows True
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 
 startUpLink := A_Startup "\launchMenu.lnk"
@@ -32,8 +36,27 @@ Constructor()
     editLuncherDir := myGui.AddEdit("x32 y106 w460 h23", launcherPath)
     buttonLuncherDir := myGui.AddButton("x500 y106 w40 h23", "选择")
 
-    buttonLuncherDir.OnEvent("Click", SelectLaunchDirHandler)
+    myGui.AddText("x24 y150", "AHK Script")
+    uxView := myGui.AddListView("x24 y170 w560 h200 +NoSort", ["name", "autoRun", "status"])
+    uxView.ModifyCol(1, 200)
+    uxView.ModifyCol(2, 80)
+    uxView.ModifyCol(3, 80)
 
+    uxFiles := Array()
+    loop files A_ScriptDir "\ux\*.ahk", "F"
+    {
+        uxFiles.Push(A_LoopFileName)
+    }
+
+    autoRuns := StrSplit(IniRead(configIni, "config", "autoRuns", ""), ",")
+
+    for item in uxFiles {
+        uxView.Add(, item, Autorun(item), Status(item))
+    }
+
+    uxView.OnEvent("ContextMenu", Ctrl_ContextMenu)
+
+    buttonLuncherDir.OnEvent("Click", SelectLaunchDirHandler)
     CheckBoxStartUp.OnEvent("Click", StartUpEventHandler)
     CheckBoxLoadAhkScript.OnEvent("Click", LoadAhkScriptEventHandler)
     myGui.OnEvent('Close', (*) => ExitApp())
@@ -59,6 +82,63 @@ Constructor()
         } else {
             IniWrite(0, configIni, "config", "loadAhkScript")
         }
+    }
+
+    cMenu := Menu()
+    cMenu.DefineProp("data", { Value: "" })
+    Ctrl_ContextMenu(GuiCtrlObj, Item, IsRightClick, X, Y) {
+        cMenu.Delete
+        cMenu.data := Item
+        fileName := uxFiles[Item]
+        If (Status(fileName)) {
+            cMenu.Add("结束", EndScript)
+        }
+        cMenu.Add("启用自动运行", EnableAutoRun)
+        cMenu.Add("禁用自动运行", DisableAutoRun)
+        cMenu.Show()
+    }
+
+    EnableAutoRun(ItemName, ItemPos, MyMenu) {
+        filePos := MyMenu.data
+        fileName := uxFiles[filePos]
+        if (autoRuns.IndexOf(fileName) = 0) {
+            autoRuns.Push(fileName)
+            IniWrite(autoRuns.Join(), configIni, "config", "autoRuns")
+        }
+        index := uxFiles.IndexOf(fileName)
+        if (index > 0) {
+            uxView.Modify(index, , fileName, "✓", Status(fileName))
+        }
+    }
+
+    DisableAutoRun(ItemName, ItemPos, MyMenu) {
+        filePos := MyMenu.data
+        fileName := uxFiles[filePos]
+        fileIndex := autoRuns.IndexOf(fileName)
+        if (fileIndex > 0) {
+            autoRuns.RemoveAt(fileIndex)
+            IniWrite(autoRuns.Join(), configIni, "config", "autoRuns")
+        }
+        index := uxFiles.IndexOf(fileName)
+        if (index > 0) {
+            uxView.Modify(index, , fileName, "✕", Status(fileName))
+        }
+    }
+
+    EndScript(ItemName, ItemPos, MyMenu) {
+        filePos := MyMenu.data
+        fileName := uxFiles[filePos]
+        Utils.sendCmd("退出", "ahk_id " A_ScriptDir "\ux\" fileName)
+        uxView.Modify(filePos, , fileName, Autorun(fileName), Status(fileName))
+    }
+
+    Autorun(fileName) {
+        return autoRuns.IndexOf(fileName) ? "✓" : "✕"
+    }
+
+    Status(fileName) {
+        path := A_ScriptDir "\ux\" fileName
+        return WinExist(path " - AutoHotkey") ? "运行中" : ""
     }
 
     return myGui
