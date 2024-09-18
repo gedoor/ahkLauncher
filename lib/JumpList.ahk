@@ -28,18 +28,18 @@ class JumpList {
         taskCol.AddObject(shellLink)
     
         shellLink := IShellLink()
-        shellLink.SetTitle("设置导航文件夹")
-        shellLink.SetIconLocation(A_ScriptDir "\RES\CONFIG.ICO", 0)
-        shellLink.SetPath(A_AhkPath)
-        shellLink.SetArguments(A_ScriptFullPath " setDir")
-        shellLink.Commit()
-        taskCol.AddObject(shellLink)
-    
-        shellLink := IShellLink()
         shellLink.SetTitle("刷新导航菜单")
         shellLink.SetIconLocation(A_ScriptDir "\RES\REFRESH.ICO", 0)
         shellLink.SetPath(A_AhkPath)
         shellLink.SetArguments(A_ScriptFullPath " reload")
+        shellLink.Commit()
+        taskCol.AddObject(shellLink)
+    
+        shellLink := IShellLink()
+        shellLink.SetTitle("设置")
+        shellLink.SetIconLocation(A_ScriptDir "\RES\CONFIG.ICO", 0)
+        shellLink.SetPath(A_AhkPath)
+        shellLink.SetArguments(A_ScriptDir "\Config.ahk")
         shellLink.Commit()
         taskCol.AddObject(shellLink)
     
