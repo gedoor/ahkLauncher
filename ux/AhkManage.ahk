@@ -22,7 +22,7 @@ cMenu := Menu()
 cMenu.DefineProp("data", { Value: "" })
 cMenu.Add("结束", LvMenuCallback)
 
-SetTimer(upAhkProcess, 10000)
+SetTimer(upAhkProcess, 1000)
 
 upAhkProcess() {
     HWNDs := WinGetList(".ahk - AutoHotkey")
