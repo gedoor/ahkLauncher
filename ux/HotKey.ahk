@@ -1,8 +1,8 @@
 #SingleInstance Force
 #NoTrayIcon
 KeyHistory(0)
+#Include "..\lib\WinClip.ahk"
 
-RShift:: Send("^{Space}")
 
 CapsLock:: {
     KeyWait('CapsLock')                               ; wait for Capslock to be released
@@ -21,7 +21,20 @@ RAlt:: return
 LWin:: return                                        ; Suppresses the Start Menu.
 RWin:: return
 
-
-
+;大小写转换
+u:: {
+    WinClip.SetText("", false)
+    SendEvent "^c"
+    cSelected := A_Clipboard
+    WinClip.History.Item[0].Delete()
+    if (cSelected) {
+        if (IsUpper(cSelected)) {
+            WinClip.SetText(StrLower(cSelected), false)
+        } else {
+            WinClip.SetText(StrUpper(cSelected), false)
+        }
+        SendEvent "^v"
+    }
+}
 
 #HotIf
