@@ -33,10 +33,10 @@ u:: {
     SendEvent("^c")
     cSelected := A_Clipboard
     if (cSelected) {
-        if (IsUpper(cSelected)) {
-            WinClip.SetText(StrLower(cSelected), false)
-        } else {
+        if (IsIncludeLowercase(cSelected)) {
             WinClip.SetText(StrUpper(cSelected), false)
+        } else {
+            WinClip.SetText(StrLower(cSelected), false)
         }
         SendEvent("^v")
     }
@@ -47,3 +47,8 @@ u:: {
 }
 
 #HotIf
+
+;是否包含小写字母
+IsIncludeLowercase(str) {
+    return RegExMatch(str, "[a-z]") > 0
+}
