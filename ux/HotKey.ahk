@@ -1,3 +1,9 @@
+/************************************************************************
+ * @description CapsLock + u 大小写转换
+ * @author kunfei
+ * @date 2024/09/29
+ * @version 0.0.1
+ ***********************************************************************/
 #SingleInstance Force
 #NoTrayIcon
 KeyHistory(0)
@@ -26,7 +32,6 @@ u:: {
     WinClip.SetText("", false)
     SendEvent "^c"
     cSelected := A_Clipboard
-    WinClip.History.Item[0].Delete()
     if (cSelected) {
         if (IsUpper(cSelected)) {
             WinClip.SetText(StrLower(cSelected), false)
@@ -34,6 +39,9 @@ u:: {
             WinClip.SetText(StrUpper(cSelected), false)
         }
         SendEvent "^v"
+    }
+    if (WinClip.History.Count > 0) {
+        WinClip.History.Item[0].Push()
     }
 }
 
