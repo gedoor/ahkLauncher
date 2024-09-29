@@ -30,7 +30,7 @@ RWin:: return
 ;大小写转换
 u:: {
     WinClip.SetText("", false)
-    SendEvent "^c"
+    SendEvent("^c")
     cSelected := A_Clipboard
     if (cSelected) {
         if (IsUpper(cSelected)) {
@@ -38,9 +38,10 @@ u:: {
         } else {
             WinClip.SetText(StrUpper(cSelected), false)
         }
-        SendEvent "^v"
+        SendEvent("^v")
     }
     if (WinClip.History.Count > 0) {
+        Sleep(1000)
         WinClip.History.Item[0].Push()
     }
 }
