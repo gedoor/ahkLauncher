@@ -1,8 +1,6 @@
 /************************************************************************
  * @description CapsLock + u 大小写转换, CapsLock + number 粘贴历史记录
  * @author kunfei
- * @date 2024/09/29
- * @version 0.0.1
  ***********************************************************************/
 #SingleInstance Force
 #NoTrayIcon
