@@ -44,6 +44,22 @@ u:: {
     }
 }
 
+;显示选中文字的信息
+p:: {
+    WinClip.SetText("", false)
+    SendEvent("^c")
+    cSelected := A_Clipboard
+    if (cSelected) {
+        size := StrLen(cSelected)
+        ToolTip("字数:" size)
+        SetTimer () => ToolTip(), -3000
+    }
+    if (WinClip.History.Count > 0) {
+        Sleep(1000)
+        WinClip.History.Item[0].Push()
+    }
+}
+
 ;粘贴剪贴板历史第1条记录
 1:: {
     if WinClip.History.Count >= 1 {

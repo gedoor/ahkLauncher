@@ -39,7 +39,7 @@ Constructor()
 
     myGui.AddText("x24 y150", "AHK Script")
     uxView := myGui.AddListView("x24 y170 w560 h230 +NoSort +Grid Backgrounde0e0e0", ["name", "autoRun", "status"])
-    uxView.ModifyCol(1, 200)
+    uxView.ModifyCol(1, 300)
     uxView.ModifyCol(2, 80)
     uxView.ModifyCol(3, 80)
 
