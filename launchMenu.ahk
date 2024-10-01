@@ -24,6 +24,7 @@ A_TrayMenu.Add()
 A_TrayMenu.Add("SelectLaunchDir", SelectLaunchDir)
 A_TrayMenu.Add("OpenLaunchDir", (*) => Run(launcherLnk))
 A_TrayMenu.Add("OpenAppDir", (*) => Run("explore " A_ScriptDir))
+A_TrayMenu.Add()
 
 launcherLnk := A_ScriptDir "\launchDir.lnk"
 
@@ -44,32 +45,12 @@ try {
     return
 }
 
-launcherMenu := createDirTreeMenu(launcTree, IconSize, LauncherMenuCallback)
-
-loadAhkScript := IniRead(configIni, "config", "loadAhkScript", 0)
-
-if (loadAhkScript){
-    scriptMenu := Menu()
-    scriptMenu.DefineProp("data", { Value: Array() })
-    
-    loop files A_ScriptDir "\ux\*.ahk", "F"
-    {
-        menuName := SubStr(A_LoopFileName, 1, StrLen(A_LoopFileName) - 4)
-        scriptMenu.Add(menuName, LauncherMenuCallback)
-        scriptMenu.data.Push({ path: A_LoopFileFullPath })
-    }
-    
-    launcherMenu.Add("AhkScript", scriptMenu)
-    launcherMenu.SetIcon("AhkScript", A_AhkPath, 1, IconSize)
-}
+BulidLauncherMenu()
 
 for arg in A_Args {
     if arg = "show"
         showLauncherMenu()
 }
-
-A_TrayMenu.Add()
-A_TrayMenu.Add("Launcher", launcherMenu)
 
 OnMessage(AppMsgNum, MsgCallback)
 
@@ -77,12 +58,36 @@ Run '"' A_AhkPath '" "' A_ScriptDir '\Autorun.ahk"'
 
 return
 
+BulidLauncherMenu() {
+    global launcherMenu
+    launcherMenu := createDirTreeMenu(launcTree, IconSize, LauncherMenuCallback)
+
+    loadAhkScript := IniRead(configIni, "config", "loadAhkScript", 0)
+
+    if (loadAhkScript) {
+        scriptMenu := Menu()
+        scriptMenu.DefineProp("data", { Value: Array() })
+
+        loop files A_ScriptDir "\ux\*.ahk", "F"
+        {
+            menuName := SubStr(A_LoopFileName, 1, StrLen(A_LoopFileName) - 4)
+            scriptMenu.Add(menuName, LauncherMenuCallback)
+            scriptMenu.data.Push({ path: A_LoopFileFullPath })
+        }
+
+        launcherMenu.Add("AhkScript", scriptMenu)
+        launcherMenu.SetIcon("AhkScript", A_AhkPath, 1, IconSize)
+    }
+    
+    A_TrayMenu.Add("Launcher", launcherMenu)
+}
+
 MsgCallback(wParam, lParam, msg, hwnd) {
     switch wParam {
         case 1111:
             showLauncherMenu()
         case 1112:
-            Reload()
+            BulidLauncherMenu()
     }
 }
 
