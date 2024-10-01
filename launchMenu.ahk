@@ -15,14 +15,15 @@ Persistent true
 TraySetIcon("res\launcher.ico")
 A_IconTip := "导航菜单"
 A_TrayMenu.Delete()
-A_TrayMenu.Add("open", TrayMenuCallback)
-A_TrayMenu.Default := "open"
-A_TrayMenu.Add("Reload", TrayMenuCallback)
-A_TrayMenu.Add("Exit", TrayMenuCallback)
+defaultMenu := "open"
+A_TrayMenu.Add(defaultMenu, (*) => Run(A_AhkPath " Config.ahk"))
+A_TrayMenu.Default := defaultMenu
+A_TrayMenu.Add("Reload", (*) => Reload())
+A_TrayMenu.Add("Exit", (*) => ExitApp())
 A_TrayMenu.Add()
-A_TrayMenu.Add("SelectLaunchDir", TrayMenuCallback)
-A_TrayMenu.Add("OpenLaunchDir", TrayMenuCallback)
-A_TrayMenu.Add("OpenAppDir", TrayMenuCallback)
+A_TrayMenu.Add("SelectLaunchDir", SelectLaunchDir)
+A_TrayMenu.Add("OpenLaunchDir", (*) => Run(launcherLnk))
+A_TrayMenu.Add("OpenAppDir", (*) => Run("explore " A_ScriptDir))
 
 launcherLnk := A_ScriptDir "\launchDir.lnk"
 
@@ -114,7 +115,7 @@ LauncherMenuCallback(ItemName, ItemPos, MyMenu) {
         DirCreate("recent")
     }
     if (rPath ~= ".*?.ahk$") {
-        Run '"' A_AhkPath '" "' rPath '"'
+        Run('"' A_AhkPath '" "' rPath '"')
         return
     }
     try {
@@ -140,21 +141,8 @@ LauncherMenuCallback(ItemName, ItemPos, MyMenu) {
     JumpList.up(AppUserModelID)
 }
 
-TrayMenuCallback(ItemName, ItemPos, MyMenu) {
-    switch ItemName, false {
-        case "open":
-            Run A_AhkPath " Config.ahk"
-        case "Reload":
-            Reload
-        case "Exit":
-            ExitApp
-        case "SelectLaunchDir":
-            if AppUtils.SelectLaunchDir() {
-                Reload
-            }
-        case "OpenLaunchDir":
-            Run launcherLnk
-        case "OpenAppDir":
-            Run "explore " A_ScriptDir
+SelectLaunchDir(*) {
+    if AppUtils.SelectLaunchDir() {
+        Reload
     }
 }
