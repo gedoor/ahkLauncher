@@ -4,18 +4,18 @@
  ***********************************************************************/
 #SingleInstance Force
 #NoTrayIcon
-KeyHistory(0)
 #Include "..\lib\WinClip.ahk"
 
-
+;A_PriorKey首先必须安装键盘或鼠标钩子并且启用了key history(按键历史).
 CapsLock:: {
-    KeyWait('CapsLock')                               ; wait for Capslock to be released
-    if (A_TimeSinceThisHotkey < 200)                  ; in 0.2 seconds
-        and KeyWait('CapsLock', 'D T0.2')                 ; and pressed again within 0.2 seconds
-        and (A_PriorKey = 'CapsLock')                     ; block other keys
+    ; wait for Capslock to be released
+    KeyWait('CapsLock')
+    ; in 0.2 seconds and pressed again within 0.2 seconds and block other keys
+    if ((A_TimeSinceThisHotkey < 200) and KeyWait('CapsLock', 'D T0.2') and (A_PriorKey = 'CapsLock'))
+    {
         SetCapsLockState !GetKeyState('CapsLock', 'T')
+    }
 }
-*CapsLock:: Send '{Blind}{vk07}'                     ; This forces capslock into a modifying key & blocks the alt/start menus
 
 #HotIf GetKeyState("CapsLock", "P")
 

@@ -11,24 +11,24 @@ DetectHiddenWindows True
 for arg in A_Args {
     switch arg {
         case "setDir":
-            {
-                AppUtils.SelectLaunchDir()
-                ExitApp
-            }
+        {
+            AppUtils.SelectLaunchDir()
+            ExitApp
+        }
         case "upJumpList":
-            {
-                JumpList.up()
-                ExitApp
-            }
+        {
+            JumpList.up()
+            ExitApp
+        }
         case "reload":
-            {
-                try {
-                    PostMessage(AppMsgNum, 1112, 1112, , "launchMenu.ahk - AutoHotkey")
-                } catch {
-                    Run A_AhkPath " launchMenu.ahk"
-                }
-                ExitApp
+        {
+            try {
+                PostMessage(AppMsgNum, 1112, 1112, , "launchMenu.ahk - AutoHotkey")
+            } catch {
+                Run A_AhkPath " launchMenu.ahk"
             }
+            ExitApp
+        }
     }
 }
 
