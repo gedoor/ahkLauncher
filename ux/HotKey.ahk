@@ -5,13 +5,17 @@
 #SingleInstance Force
 #NoTrayIcon
 #Include "..\lib\WinClip.ahk"
+#Include "..\lib\WinEvent.ahk"
+KeyHistory(0)
 
-;A_PriorKey首先必须安装键盘或鼠标钩子并且启用了key history(按键历史).
+; 切换窗口后关闭大写锁定键
+WinEvent.Active((*) => SetCapsLockState('Off'))
+
 CapsLock:: {
     ; wait for Capslock to be released
     KeyWait('CapsLock')
-    ; in 0.2 seconds and pressed again within 0.2 seconds and block other keys
-    if ((A_TimeSinceThisHotkey < 200) and KeyWait('CapsLock', 'D T0.2') and (A_PriorKey = 'CapsLock'))
+    ; in 0.2 seconds and pressed again within 0.2 seconds
+    if ((A_TimeSinceThisHotkey < 200) and KeyWait('CapsLock', 'D T0.2'))
     {
         SetCapsLockState !GetKeyState('CapsLock', 'T')
     }
