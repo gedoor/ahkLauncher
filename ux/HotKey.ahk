@@ -20,6 +20,7 @@ CapsLock:: {
         SetCapsLockState !GetKeyState('CapsLock', 'T')
     }
 }
+*CapsLock:: Send '{Blind}{vkE8}' ; This forces capslock into a modifying key & blocks the alt/start menus
 
 #HotIf GetKeyState("CapsLock", "P")
 
