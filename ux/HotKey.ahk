@@ -20,28 +20,32 @@ CapsLock:: {
         SetCapsLockState !GetKeyState('CapsLock', 'T')
     }
 }
-*CapsLock:: Send '{Blind}{vkE8}' ; This forces capslock into a modifying key & blocks the alt/start menus
+; This forces capslock into a modifying key & blocks the alt/start menus
+*CapsLock:: Send '{Blind}{vkE8}'
 
 #HotIf GetKeyState("CapsLock", "P")
 
-; ---- Your hotkeys go here! ----
-LAlt:: return                                        ; Disables Alt menu when CapsLock + Alt is pressed.
+; Disables Alt menu and Start Menu when CapsLock pressed!
+LAlt:: return
 RAlt:: return
-LWin:: return                                        ; Suppresses the Start Menu.
+LWin:: return
 RWin:: return
 
 ;大小写转换
 u:: {
     WinClip.SetText("", false)
     SendEvent("^c")
-    cSelected := A_Clipboard
-    if (cSelected) {
-        if (IsIncludeLowercase(cSelected)) {
-            WinClip.SetText(StrUpper(cSelected), false)
-        } else {
-            WinClip.SetText(StrLower(cSelected), false)
+    if (ClipWait(1)) {
+        cSelected := Trim(A_Clipboard)
+        WinClip.History.Item[0].Delete()
+        if cSelected {
+            if (IsIncludeLowercase(cSelected)) {
+                WinClip.SetText(StrUpper(cSelected), false)
+            } else {
+                WinClip.SetText(StrLower(cSelected), false)
+            }
+            SendEvent("^v")
         }
-        SendEvent("^v")
     }
     if (WinClip.History.Count > 0) {
         Sleep(1000)
@@ -53,11 +57,14 @@ u:: {
 p:: {
     WinClip.SetText("", false)
     SendEvent("^c")
-    cSelected := A_Clipboard
-    if (cSelected) {
-        size := StrLen(cSelected)
-        ToolTip("字数:" size)
-        SetTimer () => ToolTip(), -3000
+    if (ClipWait(1)) {
+        cSelected := Trim(A_Clipboard)
+        WinClip.History.Item[0].Delete()
+        if cSelected {
+            size := StrLen(cSelected)
+            ToolTip("字数:" size)
+            SetTimer () => ToolTip(), -3000
+        }
     }
     if (WinClip.History.Count > 0) {
         Sleep(1000)
