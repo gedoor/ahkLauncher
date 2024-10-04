@@ -9,10 +9,6 @@ class IShellLink {
     static PKEY_Title := DllUtils.DEFINE_PROPERTYKEY("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}", 2)
     static PKEY_AppUserModel_ID := DllUtils.DEFINE_PROPERTYKEY("{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}", 5)
 
-    static Call(comObj?) {
-        return super.Call(comObj?)
-    }
-
     static Type := DllUtils.IIDFromString(this.IID)
 
     __New(comObj?) {

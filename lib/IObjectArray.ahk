@@ -6,10 +6,6 @@ class IObjectArray {
     static CLSID := "{2d3468c1-36a7-43b6-ac24-d3f02fd9607a}"
     static IID := "{92CA9DCD-5622-4bba-A805-5E9F541BD8C9}"
 
-    static Call(comObj?){
-        return super.Call(comObj?)
-    }
-
     static Type := DllUtils.IIDFromString(this.IID)
 
     __new(comObj?)
