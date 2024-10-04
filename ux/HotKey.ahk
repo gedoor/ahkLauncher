@@ -36,9 +36,9 @@ u:: {
     WinClip.SetText("", false)
     SendEvent("^c")
     if (ClipWait(1)) {
-        cSelected := Trim(A_Clipboard)
+        cSelected := A_Clipboard
         WinClip.History.Item[0].Delete()
-        if cSelected {
+        if Trim(cSelected) {
             if (IsIncludeLowercase(cSelected)) {
                 WinClip.SetText(StrUpper(cSelected), false)
             } else {
@@ -58,11 +58,12 @@ p:: {
     WinClip.SetText("", false)
     SendEvent("^c")
     if (ClipWait(1)) {
-        cSelected := Trim(A_Clipboard)
+        cSelected := A_Clipboard
         WinClip.History.Item[0].Delete()
-        if cSelected {
-            size := StrLen(cSelected)
-            ToolTip("字数:" size)
+        if Trim(cSelected) {
+            strLenth := StrLen(cSelected)
+            wordCount := StrLen(RegExReplace(cSelected, "\s+", ""))
+            ToolTip("字符串长度:" strLenth "`n文字数量:" wordCount)
             SetTimer () => ToolTip(), -3000
         }
     }
