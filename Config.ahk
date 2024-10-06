@@ -22,12 +22,12 @@ Constructor()
 {
     myGui := Gui()
     myGui.Title := "AhkLauncher配置"
-    myGui.AddText("x24 y16 w546 h59", "这是一个将文件夹显示为导航菜单的应用,因为trueLuanchBar不更新了,对win11支持不好,所以开发了这个应用.")
+    myGui.AddText("x24 y16 w572 h59", "这是一个将文件夹显示为导航菜单的应用,因为trueLuanchBar不更新了,对win11支持不好,所以开发了这个应用.")
     isStartUp := FileExist(startUpLink) ? 1 : 0
     CheckBoxStartUp := myGui.AddCheckbox("x24 y56 w100 h23 Checked" isStartUp, "开机启动")
     loadAhkScript := IniRead(configIni, "config", "loadAhkScript", 0)
     CheckBoxLoadAhkScript := myGui.AddCheckbox("x124 y56 w200 h23 Checked" loadAhkScript, "加载 AHK 脚本菜单")
-    myGui.AddGroupBox("x24 y90 w560 h50", "导航文件夹")
+    myGui.AddGroupBox("x24 y90 w572 h50", "导航文件夹")
 
     launcherLnk := A_ScriptDir "\launchDir.lnk"
     launcherPath := ""
@@ -38,7 +38,7 @@ Constructor()
     buttonLuncherDir := myGui.AddButton("x500 y106 w40 h23", "选择")
 
     myGui.AddText("x24 y150", "AHK Script")
-    uxView := myGui.AddListView("x24 y170 w560 h230 +NoSort +Grid Backgrounde0e0e0", ["name", "autoRun", "status"])
+    uxView := myGui.AddListView("x24 y170 w572 h230 +NoSort +Grid Backgrounde0e0e0", ["name", "autoRun", "status"])
     uxView.ModifyCol(1, 300)
     uxView.ModifyCol(2, 80)
     uxView.ModifyCol(3, 80)
