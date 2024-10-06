@@ -54,8 +54,6 @@ LvMenuCallback(ItemName, ItemPos, MyMenu) {
             processArray.RemoveAt(index, 1)
             lv.Delete(index)
         }
-        default:
-
     }
 }
 

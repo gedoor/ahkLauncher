@@ -92,8 +92,22 @@ MsgCallback(wParam, lParam, msg, hwnd) {
 }
 
 showLauncherMenu() {
-    if not IsSet(launcherMenu)
+    if not IsSet(launcherMenu) {
+        ToolTip("加载中")
+        SetTimer () => ToolTip(), -3000
         return
+    }
+
+    global dpiZom
+    global IconSize
+    nowDpiZom := A_ScreenDPI / 96
+    if nowDpiZom != dpiZom {
+        dpiZom := nowDpiZom
+        IconSize := Integer(32 * dpiZom)
+        BulidLauncherMenu()
+        showLauncherMenu()
+        return
+    }
 
     MouseGetPos(&mouseX, &mouseY)
     ; default menu pos to mouse pos
