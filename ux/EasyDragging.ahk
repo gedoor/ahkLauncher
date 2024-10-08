@@ -51,6 +51,11 @@ CoordMode "Mouse"
     ; Get the initial mouse position and window id, and
     ; abort if the window is maximized.
     MouseGetPos &KDE_X1, &KDE_Y1, &KDE_id
+    style := WinGetStyle(KDE_id)
+    ; 样式没有0x40000 无法调整大小的窗口
+    if not (style & 0x40000) {
+        return
+    }
     if WinGetMinMax(KDE_id)
         return
     ; Get the initial window position and size.
