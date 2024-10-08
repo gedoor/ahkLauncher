@@ -34,8 +34,8 @@ Constructor()
     if FileExist(launcherLnk) {
         FileGetShortcut launcherLnk, &launcherPath
     }
-    editLuncherDir := myGui.AddEdit("x32 y106 w460 h23", launcherPath)
-    buttonLuncherDir := myGui.AddButton("x500 y106 w40 h23", "选择")
+    editLuncherDir := myGui.AddEdit("x32 y108 w460", launcherPath)
+    buttonLuncherDir := myGui.AddButton("x500 y106 w40 h24", "选择")
 
     myGui.AddText("x24 y150", "AHK Script")
     uxView := myGui.AddListView("x24 y170 w572 h230 +NoSort +Grid Backgrounde0e0e0", ["name", "autoRun", "status"])

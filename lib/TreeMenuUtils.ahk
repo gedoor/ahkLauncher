@@ -6,6 +6,7 @@ createDirTreeMenu(dirTree, iconSize, callback) {
         if item.isDir {
             mMenu := createDirTreeMenu(item.cList, iconSize, callback)
             lMenu.Add(item.name, mMenu)
+            item.hMenu := mMenu.Handle
         } else {
             lMenu.Add(item.name, callback)
         }
@@ -32,7 +33,8 @@ getDirTree(path, maxSize := 100, start := 0) {
                 name: A_LoopFileName,
                 path: A_LoopFileFullPath,
                 icon: getItemIcon(A_LoopFileFullPath),
-                cList: mList
+                cList: mList,
+                hMenu: 0
             })
         } else {
             fileName := A_LoopFileName
