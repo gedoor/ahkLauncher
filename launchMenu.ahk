@@ -12,6 +12,7 @@ CoordMode "Mouse", "Screen"
 CoordMode "Menu", "Screen"
 Persistent true
 WM_MENURBUTTONUP := 0x0122
+WM_UNINITMENUPOPUP := 0x0125
 
 TraySetIcon("res\launcher.ico")
 A_IconTip := "导航菜单"
@@ -48,14 +49,16 @@ try {
 
 BulidLauncherMenu()
 
+OnMessage(AppMsgNum, AppMsgCallback)
+
+OnMessage(WM_MENURBUTTONUP, (wParam, lParam, *) => MenuRButtonUp(wParam, lParam, launcherMenu.data))
+
+OnMessage(WM_UNINITMENUPOPUP, (*) => ToolTip())
+
 for arg in A_Args {
     if arg = "show"
         showLauncherMenu()
 }
-
-OnMessage(AppMsgNum, AppMsgCallback)
-
-OnMessage(WM_MENURBUTTONUP, MenuRButtonUpCallback)
 
 Run '"' A_AhkPath '" "' A_ScriptDir '\Autorun.ahk"'
 
@@ -81,11 +84,11 @@ BulidLauncherMenu() {
         launcherMenu.Add("AhkScript", scriptMenu)
         launcherMenu.SetIcon("AhkScript", A_AhkPath, 1, IconSize)
     }
-    
+
     A_TrayMenu.Add("Launcher", launcherMenu)
 }
 
-AppMsgCallback(wParam, lParam, msg, hwnd) {
+AppMsgCallback(wParam, lParam, *) {
     switch wParam {
         case 1111:
             showLauncherMenu()
@@ -163,21 +166,20 @@ LauncherMenuCallback(ItemName, ItemPos, MyMenu) {
     JumpList.up(AppUserModelID)
 }
 
-MenuRButtonUpCallback(wParam, lParam, *) {
-    menuData := launcherMenu.data
-    MenuRButtonUp(wParam, lParam, menuData)
-}
-
 MenuRButtonUp(wParam, lParam, menuData) {
     for item in menuData {
         if item.HasProp("hMenu") {
             if item.hMenu = lParam {
                 rItem := item.cList[wParam + 1]
                 path := rItem.path
+                if path ~= ".*?.lnk$" {
+                    FileGetShortcut path, &path
+                }
                 ToolTip(path)
-                SetTimer () => ToolTip(), 3000
+                return true
             } else if (item.hMenu) {
-                MenuRButtonUp(wParam, lParam, item.cList)
+                if MenuRButtonUp(wParam, lParam, item.cList)
+                    return true
             }
         }
     }
