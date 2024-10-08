@@ -3,7 +3,7 @@
 #Include lib\AppUtils.ahk
 #Include lib\JumpList.ahk
 #Include lib\ThemeUtils.ahk
-#Include lib\TreeMenuUtils.ahk
+#Include lib\LaunchMenuUtils.ahk
 #Include lib\Utils.ahk
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 ;@Ahk2Exe-SetMainIcon res\launcher.ico
@@ -40,13 +40,6 @@ dpiZom := A_ScreenDPI / 96
 
 IconSize := Integer(32 * dpiZom)
 
-try {
-    launcTree := getDirTree(launcherPath)
-} catch TimeoutError as err {
-    MsgBox(err.Message)
-    return
-}
-
 BulidLauncherMenu()
 
 OnMessage(AppMsgNum, AppMsgCallback)
@@ -65,6 +58,13 @@ Run '"' A_AhkPath '" "' A_ScriptDir '\Autorun.ahk"'
 return
 
 BulidLauncherMenu() {
+    try {
+        launcTree := getDirTree(launcherPath)
+    } catch TimeoutError as err {
+        MsgBox(err.Message)
+        return
+    }
+
     global launcherMenu
     launcherMenu := createDirTreeMenu(launcTree, IconSize, LauncherMenuCallback)
 

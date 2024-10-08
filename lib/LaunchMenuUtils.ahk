@@ -16,7 +16,7 @@ createDirTreeMenu(dirTree, iconSize, callback) {
     return lMenu
 }
 
-getDirTree(path, maxSize := 100, start := 0) {
+getDirTree(path, maxSize := 100, &start := 0) {
     list := []
     loop Files path "\*", "FD"
     {
@@ -27,7 +27,7 @@ getDirTree(path, maxSize := 100, start := 0) {
         }
         start := start + 1
         if A_LoopFileAttrib ~= "[D]" {
-            mList := getDirTree(A_LoopFileFullPath, maxSize, start)
+            mList := getDirTree(A_LoopFileFullPath, maxSize, &start)
             list.Push({
                 isDir: true,
                 name: A_LoopFileName,
