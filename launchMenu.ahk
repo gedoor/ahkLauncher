@@ -45,7 +45,7 @@ BulidLauncherMenu()
 
 OnMessage(AppMsgNum, AppMsgCallback)
 
-OnMessage(WM_MENURBUTTONUP, (wParam, lParam, *) => MenuRButtonUp(wParam, lParam, launcherMenu.data))
+OnMessage(WM_MENURBUTTONUP, MenuRButtonUpCallback)
 
 OnMessage(WM_UNINITMENUPOPUP, HideToolTip)
 
@@ -169,23 +169,16 @@ LauncherMenuCallback(ItemName, ItemPos, MyMenu) {
     JumpList.up(AppUserModelID)
 }
 
-MenuRButtonUp(wParam, lParam, menuData) {
-    for item in menuData {
-        if item.HasProp("hMenu") {
-            if item.hMenu = lParam {
-                rItem := item.cList[wParam + 1]
-                path := rItem.path
-                if path ~= ".*?.lnk$" {
-                    FileGetShortcut path, &path
-                }
-                ToolTip(path)
-                return true
-            } else if (item.hMenu) {
-                if MenuRButtonUp(wParam, lParam, item.cList)
-                    return true
-            }
+MenuRButtonUpCallback(wParam, lParam, *) {
+    menuItem := findMenu(launcherMenu.data, lParam, wParam)
+    if menuItem {
+        path := menuItem.path
+        if path ~= ".*?.lnk$" {
+            FileGetShortcut path, &path
         }
+        ToolTip(path)
     }
+
 }
 
 SelectLaunchDir(*) {

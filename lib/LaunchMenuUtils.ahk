@@ -52,6 +52,23 @@ getDirTree(path, maxSize := 100, &start := 0) {
     return list
 }
 
+findMenu(menuData, menuHandle, pos) {
+    for item in menuData {
+        if item.HasProp("hMenu") {
+            if item.hMenu = menuHandle {
+                rItem := item.cList[pos + 1]
+                return rItem
+            } else if (item.hMenu) {
+                rItem := findMenu(item.cList, menuHandle, pos)
+                if rItem {
+                    return rItem
+                }
+            }
+        }
+    }
+    return ""
+}
+
 getItemIcon(fPath) {
     SplitPath fPath, , , &fExt
     fAttr := FileGetAttrib(fPath)
