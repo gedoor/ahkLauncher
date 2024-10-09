@@ -33,44 +33,28 @@ RWin:: return
 
 ;大小写转换
 u:: {
-    WinClip.SetText("", false)
-    SendEvent("^c")
-    if (ClipWait(1)) {
-        cSelected := A_Clipboard
-        WinClip.History.Item[0].Delete()
-        if Trim(cSelected) {
-            if (IsIncludeLowercase(cSelected)) {
-                WinClip.SetText(StrUpper(cSelected), false)
-            } else {
-                WinClip.SetText(StrLower(cSelected), false)
-            }
-            SendEvent("^v")
+    cSelected := GetSelectedText()
+    if Trim(cSelected) {
+        if (IsIncludeLowercase(cSelected)) {
+            WinClip.SetText(StrUpper(cSelected), false, false)
+        } else {
+            WinClip.SetText(StrLower(cSelected), false, false)
         }
+        SendEvent("^v")
     }
-    if (WinClip.History.Count > 0) {
-        Sleep(1000)
-        WinClip.History.Item[0].Push()
-    }
+    SetTimer () => RestoreClip(), -1000
 }
 
 ;显示选中文字的信息
 p:: {
-    WinClip.SetText("", false)
-    SendEvent("^c")
-    if (ClipWait(1)) {
-        cSelected := A_Clipboard
-        WinClip.History.Item[0].Delete()
-        if Trim(cSelected) {
-            strLenth := StrLen(cSelected)
-            wordCount := StrLen(RegExReplace(cSelected, "\s+", ""))
-            ToolTip("字符串长度:" strLenth "`n文字数量:" wordCount)
-            SetTimer () => ToolTip(), -3000
-        }
+    cSelected := GetSelectedText()
+    if Trim(cSelected) {
+        strLenth := StrLen(cSelected)
+        wordCount := StrLen(RegExReplace(cSelected, "\s+", ""))
+        ToolTip("字符串长度:" strLenth "`n文字数量:" wordCount)
+        SetTimer () => ToolTip(), -3000
     }
-    if (WinClip.History.Count > 0) {
-        Sleep(1000)
-        WinClip.History.Item[0].Push()
-    }
+    SetTimer () => RestoreClip(), -1000
 }
 
 ;粘贴剪贴板历史第1条记录
@@ -115,6 +99,25 @@ p:: {
 
 
 #HotIf
+
+GetSelectedText() {
+    WinClip.SetText("", false, false)
+    SendEvent("^c")
+    if (ClipWait(1)) {
+        cSelected := A_Clipboard
+        if (WinClip.History.Count > 0) {
+            WinClip.History.Item[0].Delete()
+        }
+        return cSelected
+    }
+    return ""
+}
+
+RestoreClip() {
+    if (WinClip.History.Count > 0) {
+        WinClip.History.Item[0].Push()
+    }
+}
 
 ;是否包含小写字母
 IsIncludeLowercase(str) {
