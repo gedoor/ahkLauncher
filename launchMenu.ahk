@@ -13,6 +13,7 @@ CoordMode "Menu", "Screen"
 Persistent true
 WM_MENURBUTTONUP := 0x0122
 WM_UNINITMENUPOPUP := 0x0125
+WM_MENUSELECT := 0x11F
 
 TraySetIcon("res\launcher.ico")
 A_IconTip := "导航菜单"
@@ -46,7 +47,9 @@ OnMessage(AppMsgNum, AppMsgCallback)
 
 OnMessage(WM_MENURBUTTONUP, (wParam, lParam, *) => MenuRButtonUp(wParam, lParam, launcherMenu.data))
 
-OnMessage(WM_UNINITMENUPOPUP, (*) => ToolTip())
+OnMessage(WM_UNINITMENUPOPUP, HideToolTip)
+
+OnMessage(WM_MENUSELECT, HideToolTip)
 
 for arg in A_Args {
     if arg = "show"
@@ -189,4 +192,8 @@ SelectLaunchDir(*) {
     if AppUtils.SelectLaunchDir() {
         Reload
     }
+}
+
+HideToolTip(*) {
+    ToolTip()
 }
