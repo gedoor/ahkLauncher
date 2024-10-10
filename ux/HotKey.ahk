@@ -31,6 +31,11 @@ RAlt:: return
 LWin:: return
 RWin:: return
 
+;test
+t:: {
+    cSelected := GetSelectedText()
+}
+
 ;大小写转换
 u:: {
     cSelected := GetSelectedText()
@@ -100,19 +105,26 @@ p:: {
 
 #HotIf
 
+;获取选择的文本
 GetSelectedText() {
-    WinClip.SetText("", false, false)
+    A_Clipboard := ""
     SendEvent("^c")
     if (ClipWait(1)) {
         cSelected := A_Clipboard
-        if (WinClip.History.Count > 0) {
-            WinClip.History.Item[0].Delete()
-        }
+        SetTimer () => DeleteClipHistory(cSelected), -500
         return cSelected
     }
     return ""
 }
 
+;删除ClipHistory顶部记录
+DeleteClipHistory(text) {
+    if WinClip.History.Count > 0 && WinClip.History.Item[0].Content.GetText() = text {
+        WinClip.History.Item[0].Delete()
+    }
+}
+
+;恢复剪贴板
 RestoreClip() {
     if (WinClip.History.Count > 0) {
         WinClip.History.Item[0].Push()
