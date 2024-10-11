@@ -35,8 +35,8 @@ RAlt:: return
 LWin:: return
 RWin:: return
 
-;test
-t:: {
+;翻译
+q:: {
     cSelected := GetSelectedText()
     text := GoogleTranslate(cSelected, &from := 'auto', 'zh')
     MsgBox text, "翻译"
