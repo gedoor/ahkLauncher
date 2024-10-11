@@ -1,11 +1,15 @@
 /************************************************************************
- * @description CapsLock + u 大小写转换, CapsLock + number 粘贴历史记录
+ * @description 
+ * CapsLock + u 大小写转换, 
+ * CapsLock + p 显示选中文字信息
+ * CapsLock + number 粘贴历史记录
  * @author kunfei
  ***********************************************************************/
 #SingleInstance Force
 #NoTrayIcon
 #Include "..\lib\WinClip.ahk"
 #Include "..\lib\WinEvent.ahk"
+#Include "..\lib\GoogleTranslate.ahk"
 KeyHistory(0)
 
 ; 切换窗口后关闭大写锁定键
@@ -34,6 +38,8 @@ RWin:: return
 ;test
 t:: {
     cSelected := GetSelectedText()
+    text := GoogleTranslate(cSelected, &from := 'auto', 'zh')
+    MsgBox text, "翻译"
 }
 
 ;大小写转换
