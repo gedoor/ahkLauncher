@@ -44,7 +44,7 @@ WheelUp:: {
 lastRButton := 0
 
 $RButton:: {
-    if (A_TickCount - lastRButton < 100) {
+    if (A_TickCount - lastRButton < 200) {
         return
     }
     global lastRButton
