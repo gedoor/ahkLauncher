@@ -3,6 +3,7 @@
 #Include ..\lib\Json.ahk
 #Include ..\lib\ArrayExtensions.ahk
 TraySetIcon("..\res\fcl.ico")
+DllCall("Shell32.dll\SetCurrentProcessExplicitAppUserModelID", "str", "AhkFileWatch")
 
 configPath := A_ScriptDir "\data\fileChangeListener.json"
 if not DirExist("data") {
