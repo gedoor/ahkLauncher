@@ -3,13 +3,20 @@
 #NoTrayIcon
 
 autoRuns := StrSplit(IniRead(configIni, "config", "autoRuns", ""), ",")
+removed := []
 
 for fileName in autoRuns {
     path := A_ScriptDir "\ux\" fileName
-    if not DirExist(path) {
-        autoRuns.RemoveAt(A_Index)
-        IniWrite(autoRuns.Join(), configIni, "config", "autoRuns")
-    } else {
+    if FileExist(path) {
         Run '"' A_AhkPath '" "' path '"'
+    } else {
+        removed.Push(A_Index)
     }
+}
+
+if removed.Length > 0 {
+    for index in removed.Reverse() {
+        autoRuns.RemoveAt(removed[index])
+    }
+    IniWrite(autoRuns.Join(), configIni, "config", "autoRuns")
 }
