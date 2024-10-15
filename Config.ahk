@@ -80,6 +80,7 @@ Constructor()
     }
 
     SelectLaunchDirHandler(*) {
+        configUi.Opt("+OwnDialogs")
         launcherPath := AppUtils.SelectLaunchDir()
         if (launcherPath) {
             editLuncherDir.Text := launcherPath

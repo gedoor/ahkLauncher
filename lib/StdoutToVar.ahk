@@ -1,5 +1,26 @@
 #Requires AutoHotkey v2.0
 
+; ----------------------------------------------------------------------------------------------------------------------
+; Function .....: StdoutToVar
+; Description ..: Runs a command line program and returns its output.
+; Parameters ...: sCmd - Commandline to be executed.
+; ..............: sDir - Working directory.
+; ..............: sEnc - Encoding used by the target process. Look at StrGet() for possible values.
+; Return .......: Command output as a string on success, empty string on error.
+; AHK Version ..: AHK v2 x32/64 Unicode
+; Author .......: Sean (http://goo.gl/o3VCO8), modified by nfl and by Cyruz
+; License ......: WTFPL - http://www.wtfpl.net/txt/copying/
+; Changelog ....: Feb. 20, 2007 - Sean version.
+; ..............: Sep. 21, 2011 - nfl version.
+; ..............: Nov. 27, 2013 - Cyruz version (code refactored and exit code).
+; ..............: Mar. 09, 2014 - Removed input, doesn't seem reliable. Some code improvements.
+; ..............: Mar. 16, 2014 - Added encoding parameter as pointed out by lexikos.
+; ..............: Jun. 02, 2014 - Corrected exit code error.
+; ..............: Nov. 02, 2016 - Fixed blocking behavior due to ReadFile thanks to PeekNamedPipe.
+; ..............: Apr. 13, 2021 - Code restyling. Fixed deprecated DllCall types.
+; ..............: Oct. 06, 2022 - AHK v2 version. Throw exceptions on failure.
+; ..............: Oct. 08, 2022 - Exceptions management and handles closure fix. Thanks to lexikos and iseahound.
+; ----------------------------------------------------------------------------------------------------------------------
 StdoutToVar(sCmd, sDir:="", sEnc:="CP0") {
     ; Create 2 buffer-like objects to wrap the handles to take advantage of the __Delete meta-function.
     oHndStdoutRd := { Ptr: 0, __Delete: delete(this) => DllCall("CloseHandle", "Ptr", this) }

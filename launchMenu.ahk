@@ -18,7 +18,7 @@ WM_MENUSELECT := 0x11F
 TraySetIcon("res\launcher.ico")
 A_IconTip := "导航菜单"
 A_TrayMenu.Delete()
-A_TrayMenu.Add("config", (*) => Run(A_AhkPath " Config.ahk"))
+A_TrayMenu.Add("Config", (*) => Run(A_AhkPath " Config.ahk"))
 A_TrayMenu.Default := "1&"
 A_TrayMenu.Add("Reload", (*) => Reload())
 A_TrayMenu.Add("Exit", (*) => ExitApp())

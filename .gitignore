@@ -1,4 +1,5 @@
 .vscode/
+ux/data
 *.lnk
 *.ini
 *.json
