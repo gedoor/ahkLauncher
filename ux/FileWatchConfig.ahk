@@ -130,6 +130,7 @@ Remove(id) {
 TvContextMenu(GuiCtrlObj, id, *) {
     if id = 0
         return
+    tv.Modify(id, "Select")
     for item in cfg {
         if id = item["id"] {
             wacthDirMenu.data := item
