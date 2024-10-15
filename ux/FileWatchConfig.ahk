@@ -57,7 +57,7 @@ ReloadConfig(*) {
     tv.Delete()
     global cfg
     cfgJson := FileRead(configPath)
-    cfg := !cfgJson ? "" : JSON.Load(cfgJson)
+    cfg := !cfgJson ? [] : JSON.Load(cfgJson)
     If cfg {
         for item in cfg {
             id := tv.Add(item["dir"], 0, "+Expand")
@@ -95,7 +95,6 @@ AddWatchFile(wacthDir) {
 
 EditWatchFile(watchFile) {
     wfUi := WacthFileUi(watchFile)
-    wfUi.data := watchFile
     wfUi.fileEdit.Text := watchFile["file"]
     wfUi.actionEdit.Text := watchFile["action"]
     wfUi.todoEdit.Text := watchFile["todo"]
