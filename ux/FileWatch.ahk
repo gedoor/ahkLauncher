@@ -4,6 +4,7 @@
 #Include ..\lib\WatchFolder.ahk
 #Include ..\lib\Json.ahk
 #Include ..\lib\StdoutToVar.ahk
+#Include ..\lib\ArrayExtensions.ahk
 
 configPath := A_ScriptDir "\data\fileChangeListener.json"
 if not DirExist("data") {
@@ -14,39 +15,37 @@ wJson := FileRead(configPath)
 
 data := JSON.Load(wJson)
 
-watch := Map()
-
 for item in data {
-    watchFileMap := Map()
-    for watchFile in item.get("files", []) {
-        watchFileMap[watchFile.get("file")] := watchFile
-    }
-    watch[item["dir"]] := watchFileMap
     WatchFolder(item["dir"], "FileChangeCallback", true, 0x00000010)
 }
 
 FileChangeCallback(path, notifications) {
-    watchFileMap := watch.Get(path, "")
-    if not watchFileMap
-        return
-    for key, notification in notifications {
-        watchFile := watchFileMap.Get(notification.Name, "")
-        if watchFile {
-            switch watchFile["action"] {
-                case "copy":
-                {
-                    FileCopy(
-                        watchFile["file"],
-                        watchFile["todo"],
-                        true
-                    )
-                }
-                case "cmd":
-                {
-                    try {
-                        StdoutToVar(watchFile["todo"])
-                    } catch {
-                        TrayTip(, "AHK FileWatch")
+    watchDirIndex := data.Find((v) => v["dir"] = path)
+    if watchDirIndex > 0 {
+        watchDir := data[watchDirIndex]
+        for key, notification in notifications {
+            filePath := notification.name
+            watchFileIndex := watchDir["files"].Find((v) => v["file"] = filePath)
+            if watchFileIndex > 0 {
+                watchFile := watchDir["files"][watchFileIndex]
+                if watchFile {
+                    switch watchFile["action"] {
+                        case "copy":
+                        {
+                            FileCopy(
+                                watchFile["file"],
+                                watchFile["todo"],
+                                true
+                            )
+                        }
+                        case "cmd":
+                        {
+                            try {
+                                StdoutToVar(watchFile["todo"])
+                            } catch {
+                                TrayTip(, "AHK FileWatch")
+                            }
+                        }
                     }
                 }
             }
