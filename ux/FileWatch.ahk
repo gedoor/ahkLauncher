@@ -3,7 +3,7 @@
 #SingleInstance Force
 #Include ..\lib\WatchFolder.ahk
 #Include ..\lib\Json.ahk
-#Include ..\lib\StdoutToVar.ahk
+#Include ..\lib\RunCmd.ahk
 #Include ..\lib\ArrayExtensions.ahk
 
 configPath := A_ScriptDir "\data\fileChangeListener.json"
@@ -41,7 +41,7 @@ FileChangeCallback(path, notifications) {
                         case "cmd":
                         {
                             try {
-                                StdoutToVar(watchFile["todo"])
+                                RunCMD(watchFile["todo"])
                             } catch {
                                 TrayTip(, "AHK FileWatch")
                             }
