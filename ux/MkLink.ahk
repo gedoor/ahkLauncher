@@ -2,7 +2,8 @@
 #NoTrayIcon
 #Include "..\lib\RunAsAdmin.ahk"
 #Include "..\lib\RunCmd.ahk"
-
+DllCall("Shell32.dll\SetCurrentProcessExplicitAppUserModelID", "str", "AhkMklink")
+TraySetIcon(A_ComSpec)
 ;@Ahk2Exe-UpdateManifest 1
 runAsAdmin()
 
