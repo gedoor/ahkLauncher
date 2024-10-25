@@ -3,6 +3,7 @@
 #Include "..\lib\RunAsAdmin.ahk"
 #Include "..\lib\RunCmd.ahk"
 
+;@Ahk2Exe-UpdateManifest 1
 runAsAdmin()
 
 mkLinkUi := Gui()
@@ -61,7 +62,7 @@ EditAppend(hEdit, Txt)
 {
     Local Len := DllCall("User32\GetWindowTextLengthW", "ptr", hEdit)
     SendMessage(0xB1, Len, Len, hEdit)        ;  EM_SETSEL
-    SendMessage(0xC2, 0, StrPtr(Txt), hEdit)  ;  EM_REPLACESEL
+    SendMessage(0xC2, 0, StrPtr(Txt "`r`n"), hEdit)  ;  EM_REPLACESEL
 }
 
 LinkTypeClick(GuiCtrlObj, Info) {
