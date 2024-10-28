@@ -51,14 +51,26 @@ OnMessage(WM_UNINITMENUPOPUP, HideToolTip)
 
 OnMessage(WM_MENUSELECT, HideToolTip)
 
-for arg in A_Args {
-    if arg = "show"
-        showLauncherMenu()
+showOnLoaded := ""
+InitArg()
+
+if showOnLoaded {
+    ShowLauncherMenu()
 }
 
 Run '"' A_AhkPath '" "' A_ScriptDir '\Autorun.ahk"'
 
 return
+
+InitArg() {
+    for arg in A_Args {
+        if arg = "show" {
+            global showOnLoaded
+            showOnLoaded := true
+            return
+        }
+    }
+}
 
 BulidLauncherMenu() {
     try {
@@ -95,16 +107,16 @@ BulidLauncherMenu() {
 AppMsgCallback(wParam, lParam, *) {
     switch wParam {
         case 1111:
-            showLauncherMenu()
+            ShowLauncherMenu()
         case 1112:
             BulidLauncherMenu()
     }
 }
 
-showLauncherMenu() {
+ShowLauncherMenu() {
     if not IsSet(launcherMenu) {
-        ToolTip("加载中")
-        SetTimer () => ToolTip(), -3000
+        global showOnLoaded
+        showOnLoaded := true
         return
     }
 
@@ -115,15 +127,17 @@ showLauncherMenu() {
         dpiZom := nowDpiZom
         IconSize := Integer(32 * dpiZom)
         BulidLauncherMenu()
-        showLauncherMenu()
+        ShowLauncherMenu()
         return
     }
 
-    for item in scriptMenu.data {
-        if WinExist(item.path " - AutoHotkey") {
-            scriptMenu.SetIcon(item.name, "%SystemRoot%\system32\shell32.dll", 295)
-        } else {
-            scriptMenu.SetIcon(item.name, "*")
+    if IsSet(scriptMenu) {
+        for item in scriptMenu.data {
+            if WinExist(item.path " - AutoHotkey") {
+                scriptMenu.SetIcon(item.name, "%SystemRoot%\system32\shell32.dll", 295)
+            } else {
+                scriptMenu.SetIcon(item.name, "*")
+            }
         }
     }
 
