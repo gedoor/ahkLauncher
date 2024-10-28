@@ -4,7 +4,7 @@
 #Include lib\AppUtils.ahk
 #Include lib\Json.ahk
 #Include lib\ArrayExtensions.ahk
-#Include lib\Utils.ahk
+#Include lib\AhkScriptUtils.ahk
 TraySetIcon("res\launcher.ico")
 DetectHiddenWindows True
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
@@ -159,7 +159,7 @@ Constructor()
     EndScript(ItemName, ItemPos, MyMenu) {
         filePos := MyMenu.data
         fileName := uxFiles[filePos].name
-        Utils.sendCmd("退出", A_ScriptDir "\ux\" fileName)
+        AhkScript.Exit(A_ScriptDir "\ux\" fileName)
     }
 
     Autorun(fileName) {

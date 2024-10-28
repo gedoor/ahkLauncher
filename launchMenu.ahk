@@ -4,7 +4,6 @@
 #Include lib\JumpList.ahk
 #Include lib\ThemeUtils.ahk
 #Include lib\LaunchMenuUtils.ahk
-#Include lib\Utils.ahk
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 ;@Ahk2Exe-SetMainIcon res\launcher.ico
 KeyHistory(0)

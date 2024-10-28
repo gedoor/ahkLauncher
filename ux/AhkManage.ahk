@@ -2,7 +2,7 @@
 #NoTrayIcon
 #SingleInstance Force
 #Include ..\lib\ArrayExtensions.ahk
-#Include ..\lib\Utils.ahk
+#Include ..\lib\AhkScriptUtils.ahk
 DetectHiddenWindows True
 
 processArray := Array()
@@ -49,7 +49,7 @@ LvMenuCallback(ItemName, ItemPos, MyMenu) {
     switch ItemPos {
         case 1:
         {
-            Utils.sendCmd("退出", "ahk_id " MyMenu.data)
+            AhkScript.Exit("ahk_id " MyMenu.data)
             index := processArray.IndexOf(MyMenu.data)
             processArray.RemoveAt(index, 1)
             lv.Delete(index)
