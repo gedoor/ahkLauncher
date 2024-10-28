@@ -44,12 +44,12 @@ WheelUp:: {
 lastRButton := 0
 
 $RButton:: {
-    if (A_TickCount - lastRButton < 300) {
-        return
-    }
     global lastRButton
     global wheel
     global rButtonDown
+    if (A_TickCount - lastRButton < 300) {
+        return
+    }
     rButtonDown := true
     wheel := false
     hgs.Start()
