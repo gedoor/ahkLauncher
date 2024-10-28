@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 #NoTrayIcon
+DllCall("Shell32.dll\SetCurrentProcessExplicitAppUserModelID", "str", "IconPicker")
 
 icons.IconPicker()
 

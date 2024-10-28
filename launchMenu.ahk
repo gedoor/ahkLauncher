@@ -10,6 +10,7 @@ AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 KeyHistory(0)
 CoordMode "Mouse", "Screen"
 CoordMode "Menu", "Screen"
+DetectHiddenWindows True
 Persistent true
 WM_MENURBUTTONUP := 0x0122
 WM_UNINITMENUPOPUP := 0x0125
@@ -68,6 +69,7 @@ BulidLauncherMenu() {
     }
 
     global launcherMenu
+    global scriptMenu
     launcherMenu := createDirTreeMenu(launcTree, IconSize, LauncherMenuCallback)
 
     loadAhkScript := IniRead(configIni, "config", "loadAhkScript", 0)
@@ -80,7 +82,7 @@ BulidLauncherMenu() {
         {
             menuName := SubStr(A_LoopFileName, 1, StrLen(A_LoopFileName) - 4)
             scriptMenu.Add(menuName, LauncherMenuCallback)
-            scriptMenu.data.Push({ path: A_LoopFileFullPath })
+            scriptMenu.data.Push({ path: A_LoopFileFullPath, name: menuName })
         }
 
         launcherMenu.Add("AhkScript", scriptMenu)
@@ -115,6 +117,14 @@ showLauncherMenu() {
         BulidLauncherMenu()
         showLauncherMenu()
         return
+    }
+
+    for item in scriptMenu.data {
+        if WinExist(item.path " - AutoHotkey") {
+            scriptMenu.SetIcon(item.name, "%SystemRoot%\system32\shell32.dll", 295)
+        } else {
+            scriptMenu.SetIcon(item.name, "*")
+        }
     }
 
     MouseGetPos(&mouseX, &mouseY)
