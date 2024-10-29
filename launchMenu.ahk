@@ -6,6 +6,7 @@
 #Include lib\LaunchMenuUtils.ahk
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 ;@Ahk2Exe-SetMainIcon res\launcher.ico
+TraySetIcon("res\launcher.ico")
 KeyHistory(0)
 CoordMode "Mouse", "Screen"
 CoordMode "Menu", "Screen"
@@ -42,7 +43,7 @@ OnMessage(WM_MENUSELECT, HideToolTip)
 
 OnMessage(AppMsgNum, AppMsgCallback)
 
-TraySetIcon("res\launcher.ico")
+
 A_IconTip := "导航菜单"
 A_TrayMenu.Delete()
 A_TrayMenu.Add("Config", (*) => Run(A_AhkPath " Config.ahk"))
