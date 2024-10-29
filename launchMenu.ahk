@@ -11,9 +11,36 @@ CoordMode "Mouse", "Screen"
 CoordMode "Menu", "Screen"
 DetectHiddenWindows True
 Persistent true
+
+launcherLnk := A_ScriptDir "\launchDir.lnk"
+
+if !FileExist(launcherLnk) {
+    AppUtils.SelectLaunchDir()
+    if not FileExist(launcherLnk) {
+        ExitApp
+    }
+}
+try {
+    FileGetShortcut launcherLnk, &launcherPath
+} catch {
+    try FileDelete(launcherLnk)
+    MsgBox("导航文件夹出错,请重新选择!")
+    ExitApp
+}
+
+showOnLoaded := false
+InitArg()
+
+WM_INITMENUPOPUP := 0x0117
 WM_MENURBUTTONUP := 0x0122
 WM_UNINITMENUPOPUP := 0x0125
 WM_MENUSELECT := 0x11F
+OnMessage(WM_INITMENUPOPUP, MenuShowCallback)
+OnMessage(WM_MENURBUTTONUP, MenuRButtonUpCallback)
+OnMessage(WM_UNINITMENUPOPUP, HideToolTip)
+OnMessage(WM_MENUSELECT, HideToolTip)
+
+OnMessage(AppMsgNum, AppMsgCallback)
 
 TraySetIcon("res\launcher.ico")
 A_IconTip := "导航菜单"
@@ -28,30 +55,11 @@ A_TrayMenu.Add("OpenLaunchDir", (*) => Run(launcherLnk))
 A_TrayMenu.Add("OpenAppDir", (*) => Run("explore " A_ScriptDir))
 A_TrayMenu.Add()
 
-launcherLnk := A_ScriptDir "\launchDir.lnk"
-
-if !FileExist(launcherLnk) {
-    AppUtils.SelectLaunchDir()
-}
-
-FileGetShortcut launcherLnk, &launcherPath
-
 dpiZom := A_ScreenDPI / 96
 
 IconSize := Integer(32 * dpiZom)
 
 BulidLauncherMenu()
-
-OnMessage(AppMsgNum, AppMsgCallback)
-
-OnMessage(WM_MENURBUTTONUP, MenuRButtonUpCallback)
-
-OnMessage(WM_UNINITMENUPOPUP, HideToolTip)
-
-OnMessage(WM_MENUSELECT, HideToolTip)
-
-showOnLoaded := ""
-InitArg()
 
 if showOnLoaded {
     ShowLauncherMenu()
@@ -130,16 +138,6 @@ ShowLauncherMenu() {
         return
     }
 
-    if IsSet(scriptMenu) {
-        for item in scriptMenu.data {
-            if WinExist(item.path " - AutoHotkey") {
-                scriptMenu.SetIcon(item.name, "%SystemRoot%\system32\shell32.dll", 295)
-            } else {
-                scriptMenu.SetIcon(item.name, "*")
-            }
-        }
-    }
-
     MouseGetPos(&mouseX, &mouseY)
     ; default menu pos to mouse pos
     menu_x := mouseX, menu_y := mouseY
@@ -157,6 +155,20 @@ ShowLauncherMenu() {
     }
     ThemeUtils.darkMenuMode(ThemeUtils.SysIsDarkMode)
     launcherMenu.Show(menu_x, menu_y)
+}
+
+MenuShowCallback(wParam, lParam, *) {
+    if IsSet(scriptMenu) {
+        if wParam = scriptMenu.Handle {
+            for item in scriptMenu.data {
+                if WinExist(item.path " - AutoHotkey") {
+                    scriptMenu.SetIcon(item.name, "%SystemRoot%\system32\shell32.dll", 295)
+                } else {
+                    scriptMenu.SetIcon(item.name, "*")
+                }
+            }
+        }
+    }
 }
 
 LauncherMenuCallback(ItemName, ItemPos, MyMenu) {
