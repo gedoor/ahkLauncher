@@ -38,10 +38,10 @@ Constructor()
     buttonLuncherDir := cfgGui.AddButton("x500 y106 w40 h24", "选择")
 
     cfgGui.AddText("x24 y150", "AHK Script")
-    uxView := cfgGui.AddListView("x24 y170 w572 h230 +NoSort +Grid Backgrounde0e0e0", ["name", "autoRun", "status"])
+    uxView := cfgGui.AddListView("x24 y170 w572 h230 +NoSort +Grid -LV0x10 Backgrounde9e9e9", ["name", "autoRun", "status"])
     uxView.ModifyCol(1, 300)
     uxView.ModifyCol(2, 80)
-    uxView.ModifyCol(3, 80)
+    uxView.ModifyCol(3, "AutoHdr")
 
     autoRuns := StrSplit(IniRead(configIni, "config", "autoRuns", ""), ",")
     uxFiles := Array()
