@@ -1,6 +1,9 @@
 #Requires AutoHotkey v2.0
 #Include DllUtils.ahk
 
+/**
+ * 快捷方式
+ */
 class IShellLink {
 
     static CLSID := "{00021401-0000-0000-C000-000000000046}"

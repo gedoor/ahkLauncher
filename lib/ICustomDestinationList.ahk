@@ -2,6 +2,9 @@
 #Include IObjectArray.ahk
 #Include DllUtils.ahk
 
+/**
+ * 自定义任务跳转列表
+ */
 class ICustomDestinationList {
 
     __New() {
