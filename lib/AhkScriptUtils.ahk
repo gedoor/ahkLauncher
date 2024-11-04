@@ -42,9 +42,15 @@ class AhkScript {
 
     static Post0x111(scriptName, message) {
         try {
-            PostMessage(0x111, message, , , scriptname " - AutoHotkey")
+            if InStr(scriptName, " - AutoHotkey v") {
+                PostMessage(0x111, message, , , scriptname)
+            } else {
+                PostMessage(0x111, message, , , scriptname " - AutoHotkey v")
+            }
+            return true
         } catch {
             MsgBox("未找到" scriptname)
+            return false
         }
     }
 
