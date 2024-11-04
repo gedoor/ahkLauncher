@@ -4,18 +4,15 @@
 
 ; Easy Window Dragging -- KDE style (based on the v1 script by Jonny) 
 ; https://www.autohotkey.com
-; This script makes it much easier to move or resize a window: 1) Hold down
-; the ALT key and LEFT-click anywhere inside a window to drag it to a new
-; location; 2) Hold down ALT and RIGHT-click-drag anywhere inside a window
-; to easily resize it; 3) Press ALT twice, but before releasing it the second
-; time, left-click to minimize the window under the mouse cursor, right-click
-; to maximize it, or middle-click to close it.
+; This script makes it much easier to move or resize a window: 
+; 1. Hold down the CapsLock key and LEFT-click anywhere inside a window to drag it to a new location; 
+; 2. Hold down CapsLock and RIGHT-click-drag anywhere inside a window to easily resize it;
 ;
 ; The shortcuts:
-;  Alt + Left Button  : Drag to move a window.
-;  Alt + Right Button : Drag to resize a window.
+;  CapsLock + Left Button  : Drag to move a window.
+;  CapsLock + Right Button : Drag to resize a window.
 ;
-; You can optionally release Alt after the first
+; You can optionally release CapsLock after the first
 ; click rather than holding it down the whole time.
 
 ; This is the setting that runs smoothest on my
@@ -24,7 +21,7 @@
 SetWinDelay 2
 CoordMode "Mouse"
 
-!LButton::
+CapsLock & LButton::
 {
     ; Get the initial mouse position and window id, and
     ; abort if the window is maximized.
@@ -46,7 +43,7 @@ CoordMode "Mouse"
     }
 }
 
-!RButton::
+CapsLock & RButton::
 {
     ; Get the initial mouse position and window id, and
     ; abort if the window is maximized.
