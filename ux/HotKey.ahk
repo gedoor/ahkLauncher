@@ -114,11 +114,8 @@ p:: {
     }
 }
 
-
-#HotIf
-
 ;拖动窗口
-CapsLock & LButton::
+LButton::
 {
     ; Get the initial mouse position and window id, and
     ; abort if the window is maximized.
@@ -141,7 +138,7 @@ CapsLock & LButton::
 }
 
 ;调整窗口大小
-CapsLock & RButton::
+RButton::
 {
     ; Get the initial mouse position and window id, and
     ; abort if the window is maximized.
@@ -184,6 +181,8 @@ CapsLock & RButton::
         KDE_Y1 := (KDE_Y2 + KDE_Y1)
     }
 }
+
+#HotIf
 
 
 ;获取选择的文本
