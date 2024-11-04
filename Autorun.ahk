@@ -16,7 +16,7 @@ for fileName in autoRuns {
 
 if removed.Length > 0 {
     for index in removed.Reverse() {
-        autoRuns.RemoveAt(removed[index])
+        autoRuns.RemoveAt(index)
     }
     IniWrite(autoRuns.Join(), configIni, "config", "autoRuns")
 }
