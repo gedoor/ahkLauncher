@@ -6,6 +6,11 @@
 #Include ..\lib\WinEvent.ahk
 DetectHiddenWindows True
 
+cMenu := Menu()
+cMenu.DefineProp("data", { Value: "" })
+cMenu.Add("重载", LvMenuCallback)
+cMenu.Add("结束", LvMenuCallback)
+
 myGui := Gui()
 myGui.Title := "AHK脚本进程管理"
 lv := myGui.AddListView("r20 w600 +NoSort +Sort +Grid -LV0x10 Backgrounde9e9e9", ["Name", "PID"])
@@ -18,15 +23,8 @@ myGui.OnEvent("Close", Gui_Close)
 
 InitProcess()
 
-cMenu := Menu()
-cMenu.DefineProp("data", { Value: "" })
-cMenu.Add("重载", LvMenuCallback)
-cMenu.Add("结束", LvMenuCallback)
-
 WinEvent.Close(InitProcess, ".ahk - AutoHotkey")
 WinEvent.Create(InitProcess, ".ahk - AutoHotkey")
-
-processMap := Map()
 
 InitProcess(*) {
     HWNDs := WinGetList(".ahk - AutoHotkey")

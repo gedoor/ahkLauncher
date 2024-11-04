@@ -5,6 +5,7 @@
 #Include lib\Json.ahk
 #Include lib\ArrayExtensions.ahk
 #Include lib\AhkScriptUtils.ahk
+#Include lib\WinEvent.ahk
 TraySetIcon("res\launcher.ico")
 DetectHiddenWindows True
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
@@ -64,10 +65,10 @@ Constructor()
     CheckBoxStartUp.OnEvent("Click", StartUpEventHandler)
     CheckBoxLoadAhkScript.OnEvent("Click", LoadAhkScriptEventHandler)
     cfgGui.OnEvent('Close', (*) => ExitApp())
-
-    SetTimer(UpUxView, 1000)
-
-    UpUxView() {
+    WinEvent.Close(UpUxView, ".ahk - AutoHotkey")
+    WinEvent.Create(UpUxView, ".ahk - AutoHotkey")
+    
+    UpUxView(*) {
         for item in uxFiles {
             isAutorun := Autorun(item.name)
             mStatus := Status(item.name)
