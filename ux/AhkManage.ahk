@@ -3,29 +3,34 @@
 #SingleInstance Force
 #Include ..\lib\ArrayExtensions.ahk
 #Include ..\lib\AhkScriptUtils.ahk
+#Include ..\lib\WinEvent.ahk
 DetectHiddenWindows True
 
 myGui := Gui()
 myGui.Title := "AHK脚本进程管理"
-lv := myGui.AddListView("r20 w690 +NoSort +Sort +Grid -LV0x10 Backgrounde9e9e9", ["Name"])
+lv := myGui.AddListView("r20 w600 +NoSort +Sort +Grid -LV0x10 Backgrounde9e9e9", ["Name", "PID"])
+lv.ModifyCol(1, 500)
+lv.ModifyCol(2, "AutoHdr")
 lv.OnEvent("ContextMenu", Ctrl_ContextMenu)
 
-myGui.Opt("+MaxSizex200 +MaxSizey200")
 myGui.Show()
 myGui.OnEvent("Close", Gui_Close)
 
-upAhkProcess()
+InitProcess()
 
 cMenu := Menu()
 cMenu.DefineProp("data", { Value: "" })
 cMenu.Add("重载", LvMenuCallback)
 cMenu.Add("结束", LvMenuCallback)
 
-SetTimer(upAhkProcess, 1000)
+WinEvent.Close(InitProcess, ".ahk - AutoHotkey")
+WinEvent.Create(InitProcess, ".ahk - AutoHotkey")
 
-upAhkProcess() {
+processMap := Map()
+
+InitProcess(*) {
     HWNDs := WinGetList(".ahk - AutoHotkey")
-    processArray := HWNDs.map((v) => {id: v, title: WinGetTitle("ahk_id " v)})
+    processArray := HWNDs.map((v) => {id: WinGetPID("ahk_id " v), title: WinGetTitle("ahk_id " v)})
     lvRow := lv.GetCount()
     lvArray := Array(lvRow)
     while lvRow > 0 {
@@ -39,8 +44,11 @@ upAhkProcess() {
     }
     for item in processArray {
         title := item.title
+        if InStr(title, "AhkLauncher.ahk") {
+            return
+        }
         if lvArray.indexof(title) = 0 {
-            lv.Add(, title)
+            lv.Add(, title, item.id)
         }
     }
 }
