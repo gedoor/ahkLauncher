@@ -1,9 +1,9 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Ignore
 #Include lib\AppUtils.ahk
-#Include lib\JumpList.ahk
+#Include lib\DirTreeMenu.ahk
+#Include lib\LauncherJumpList.ahk
 #Include lib\ThemeUtils.ahk
-#Include lib\LaunchMenuUtils.ahk
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 ;@Ahk2Exe-SetMainIcon res\launcher.ico
 TraySetIcon("res\launcher.ico")
@@ -82,7 +82,7 @@ InitArg() {
 
 BulidLauncherMenu() {
     try {
-        launcTree := getDirTree(launcherPath)
+        launcTree := DirTreeMenu.getDirTree(launcherPath)
     } catch TimeoutError as err {
         MsgBox(err.Message)
         return
@@ -90,7 +90,7 @@ BulidLauncherMenu() {
 
     global launcherMenu
     global scriptMenu
-    launcherMenu := createDirTreeMenu(launcTree, IconSize, LauncherMenuCallback)
+    launcherMenu := DirTreeMenu.createMenu(launcTree, IconSize, LauncherMenuCallback)
 
     loadAhkScript := IniRead(configIni, "config", "loadAhkScript", 0)
 
@@ -201,11 +201,11 @@ LauncherMenuCallback(ItemName, ItemPos, MyMenu) {
 
         }
     }
-    JumpList.up(AppUserModelID)
+    LauncherJumpList.up(AppUserModelID)
 }
 
 MenuRButtonUpCallback(wParam, lParam, *) {
-    menuItem := findMenu(launcherMenu.data, lParam, wParam)
+    menuItem := DirTreeMenu.findMenu(launcherMenu.data, lParam, wParam)
     if menuItem {
         path := menuItem.path
         if path ~= ".*?.lnk$" {

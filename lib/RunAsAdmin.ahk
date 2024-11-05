@@ -1,4 +1,6 @@
-; 管理员权限
+/**
+ * 以管理员权限运行
+ */
 runAsAdmin() {
     if not A_IsAdmin
     {

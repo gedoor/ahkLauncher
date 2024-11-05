@@ -1,3 +1,7 @@
+/************************************************************************
+ * @description 导航任务栏跳转列表
+ ***********************************************************************/
+
 #Requires AutoHotkey v2.0
 
 #Include ICustomDestinationList.ahk
@@ -5,7 +9,7 @@
 #Include IObjectCollection.ahk
 #Include ArrayExtensions.ahk
 
-class JumpList {
+class LauncherJumpList {
 
     /**
      * 更新任务栏跳转列表

@@ -1,3 +1,7 @@
+/************************************************************************
+ * @description win11剪贴板历史库
+ ***********************************************************************/
+
 class WinClip {
 	static pIClipboardStatic := CreateInterface("Windows.ApplicationModel.DataTransfer.Clipboard", "{C627E291-34E2-4963-8EED-93CBB0EA3D70}")
 	static pIClipboardStatic2 := CreateInterface("Windows.ApplicationModel.DataTransfer.Clipboard", "{D2AC1B6A-D29F-554B-B303-F0452345FE02}")

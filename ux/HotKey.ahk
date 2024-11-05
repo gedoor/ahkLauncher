@@ -1,5 +1,5 @@
 /************************************************************************
- * @description 
+ * @description 热键脚本
  * CapsLock 双击切换大小写
  * CapsLock + LButton 拖动窗口
  * CapsLock + RButton 调整窗口大小
@@ -8,6 +8,7 @@
  * CapsLock + number 粘贴历史记录
  * @author kunfei
  ***********************************************************************/
+#Requires AutoHotkey v2.0
 #SingleInstance Force
 #NoTrayIcon
 #Include "..\lib\WinClip.ahk"

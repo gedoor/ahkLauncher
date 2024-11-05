@@ -1,4 +1,7 @@
-;监控文件修改
+/************************************************************************
+ * @description 监控文件修改
+ ***********************************************************************/
+#Requires AutoHotkey v2.0
 #NoTrayIcon
 #SingleInstance Force
 #Include ..\lib\WatchFolder.ahk

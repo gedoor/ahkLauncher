@@ -1,3 +1,6 @@
+/************************************************************************
+ * @description exe|dll图标查看
+ ***********************************************************************/
 #Requires AutoHotkey v2.0
 #NoTrayIcon
 DllCall("Shell32.dll\SetCurrentProcessExplicitAppUserModelID", "str", "IconPicker")

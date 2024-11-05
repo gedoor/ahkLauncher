@@ -2,7 +2,7 @@
 #SingleInstance Force
 #NoTrayIcon
 #Include lib\AppUtils.ahk
-#Include lib\JumpList.ahk
+#Include lib\LauncherJumpList.ahk
 ;@Ahk2Exe-SetMainIcon res\launcher.ico
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 KeyHistory(0)
@@ -17,7 +17,7 @@ for arg in A_Args {
         }
         case "upJumpList":
         {
-            JumpList.up()
+            LauncherJumpList.up()
             ExitApp
         }
         case "reload":
@@ -40,4 +40,4 @@ try {
 
 AppUtils.createAppLnk()
 
-JumpList.up(AppUserModelID)
+LauncherJumpList.up(AppUserModelID)

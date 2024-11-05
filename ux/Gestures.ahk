@@ -1,3 +1,7 @@
+/************************************************************************
+ * @description 鼠标手势
+ ***********************************************************************/
+#Requires AutoHotkey v2.0
 #Include ..\lib\HotGestures.ahk
 #SingleInstance Force
 #NoTrayIcon
