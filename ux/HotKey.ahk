@@ -20,14 +20,10 @@ CoordMode "Mouse"
 ; 切换窗口后关闭大写锁定键
 WinEvent.Active((*) => SetCapsLockState('Off'))
 
-;禁用左Shift切换输入法,不改变shift原有功能
-*LShift:: {
-    Send("{Shift down}")
-    Send("{vkE8}")
-    KeyWait("LShift")
-    Send("{Shift up}")
-}
+; 禁用左Shift切换输入法,不改变shift原有功能
+~LShift:: Send "{Blind}{vkFF}"
 
+; 双击CapsLock切换大小写
 CapsLock:: {
     ; wait for Capslock to be released
     KeyWait('CapsLock')
@@ -38,7 +34,7 @@ CapsLock:: {
     }
 }
 ; This forces capslock into a modifying key & blocks the alt/start menus
-*CapsLock:: Send '{Blind}{vkE8}'
+*CapsLock:: Send '{Blind}{vkFF}'
 
 
 #HotIf GetKeyState("CapsLock", "P")
@@ -49,14 +45,14 @@ RAlt:: return
 LWin:: return
 RWin:: return
 
-;翻译
+; 翻译
 q:: {
     cSelected := GetSelectedText()
     text := GoogleTranslate(cSelected, &from := 'auto', 'zh')
     MsgBox text, "翻译"
 }
 
-;大小写转换
+; 大小写转换
 u:: {
     cSelected := GetSelectedText()
     if Trim(cSelected) {
@@ -70,7 +66,7 @@ u:: {
     SetTimer () => RestoreClip(), -1000
 }
 
-;显示选中文字的信息
+; 显示选中文字的信息
 p:: {
     cSelected := GetSelectedText()
     if Trim(cSelected) {
@@ -82,7 +78,7 @@ p:: {
     SetTimer () => RestoreClip(), -1000
 }
 
-;粘贴剪贴板历史第1条记录
+; 粘贴剪贴板历史第1条记录
 1:: {
     if WinClip.History.Count >= 1 {
         WinClip.SetText(WinClip.History.Item[0].Content.GetText(), false)
@@ -90,7 +86,7 @@ p:: {
     }
 }
 
-;粘贴剪贴板历史第2条记录
+; 粘贴剪贴板历史第2条记录
 2:: {
     if WinClip.History.Count >= 2 {
         WinClip.SetText(WinClip.History.Item[1].Content.GetText(), false)
@@ -98,7 +94,7 @@ p:: {
     }
 }
 
-;粘贴剪贴板历史第3条记录
+; 粘贴剪贴板历史第3条记录
 3:: {
     if WinClip.History.Count >= 3 {
         WinClip.SetText(WinClip.History.Item[2].Content.GetText(), false)
@@ -106,7 +102,7 @@ p:: {
     }
 }
 
-;粘贴剪贴板历史第4条记录
+; 粘贴剪贴板历史第4条记录
 4:: {
     if WinClip.History.Count >= 4 {
         WinClip.SetText(WinClip.History.Item[3].Content.GetText(), false)
@@ -114,7 +110,7 @@ p:: {
     }
 }
 
-;粘贴剪贴板历史第5条记录
+; 粘贴剪贴板历史第5条记录
 5:: {
     if WinClip.History.Count >= 5 {
         WinClip.SetText(WinClip.History.Item[4].Content.GetText(), false)
@@ -122,7 +118,7 @@ p:: {
     }
 }
 
-;拖动窗口
+; 拖动窗口
 LButton::
 {
     ; Get the initial mouse position and window id, and
@@ -145,7 +141,7 @@ LButton::
     }
 }
 
-;调整窗口大小
+; 调整窗口大小
 RButton::
 {
     ; Get the initial mouse position and window id, and
