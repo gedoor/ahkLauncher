@@ -20,6 +20,14 @@ CoordMode "Mouse"
 ; 切换窗口后关闭大写锁定键
 WinEvent.Active((*) => SetCapsLockState('Off'))
 
+;禁用左Shift切换输入法,不改变shift原有功能
+*LShift:: {
+    Send("{Shift down}")
+    Send("{vkE8}")
+    KeyWait("LShift")
+    Send("{Shift up}")
+}
+
 CapsLock:: {
     ; wait for Capslock to be released
     KeyWait('CapsLock')
@@ -172,11 +180,11 @@ RButton::
         KDE_X2 -= KDE_X1 ; Obtain an offset from the initial mouse position.
         KDE_Y2 -= KDE_Y1
         ; Then, act according to the defined region.
-        WinMove KDE_WinX1 + (KDE_WinLeft+1)/2*KDE_X2  ; X of resized window
-              , KDE_WinY1 +   (KDE_WinUp+1)/2*KDE_Y2  ; Y of resized window
-              , KDE_WinW  -     KDE_WinLeft  *KDE_X2  ; W of resized window
-              , KDE_WinH  -       KDE_WinUp  *KDE_Y2  ; H of resized window
-              , KDE_id
+        WinMove KDE_WinX1 + (KDE_WinLeft + 1) / 2 * KDE_X2  ; X of resized window
+        , KDE_WinY1 + (KDE_WinUp + 1) / 2 * KDE_Y2  ; Y of resized window
+        , KDE_WinW - KDE_WinLeft * KDE_X2  ; W of resized window
+        , KDE_WinH - KDE_WinUp * KDE_Y2  ; H of resized window
+        , KDE_id
         KDE_X1 := (KDE_X2 + KDE_X1) ; Reset the initial position for the next iteration.
         KDE_Y1 := (KDE_Y2 + KDE_Y1)
     }
