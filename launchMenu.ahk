@@ -4,6 +4,7 @@
 #Include lib\DirTreeMenu.ahk
 #Include lib\LauncherJumpList.ahk
 #Include lib\ThemeUtils.ahk
+#Include lib\DescriptionUtils.ahk
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 ;@Ahk2Exe-SetMainIcon res\launcher.ico
 TraySetIcon("res\launcher.ico")
@@ -212,8 +213,13 @@ MenuRButtonUpCallback(wParam, lParam, *) {
             FileGetShortcut path, &path
         }
         ToolTip(path)
+    } else if lParam = scriptMenu.Handle {
+        ahkPath := scriptMenu.data[wParam + 1].path
+        description := DescriptionUtils.getAhkDescription(ahkPath)
+        if description {
+            ToolTip(description)
+        }
     }
-
 }
 
 SelectLaunchDir(*) {
