@@ -22,18 +22,18 @@ hgs.Register(gestureLeft, "Back")
 hgs.Register(gestureRight, "Forward")
 hgs.Register(gestureUpDown, "Refresh")
 
-wheel := false
+hotRButton := false
 
 #HotIf GetKeyState("RButton", "P")
 
 WheelDown:: {
     Send("{PgDn}")
-    global wheel := true
+    global hotRButton := true
 }
 
 WheelUp:: {
     Send("{PgUp}")
-    global wheel := true
+    global hotRButton := true
 }
 
 #HotIf
@@ -45,7 +45,7 @@ $RButton:: {
     if (A_TickCount - lastRButton < 300) {
         return
     }
-    global wheel := false
+    global hotRButton := false
     hgs.Start()
     KeyWait("RButton")
     hgs.Stop()
@@ -88,7 +88,7 @@ $RButton:: {
             default: return
         }
     }
-    else if (!wheel) {
+    else if (!hotRButton) {
         SendEvent("{RButton}")
     }
 }
