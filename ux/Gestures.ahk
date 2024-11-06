@@ -22,43 +22,32 @@ hgs.Register(gestureLeft, "Back")
 hgs.Register(gestureRight, "Forward")
 hgs.Register(gestureUpDown, "Refresh")
 
-rButtonDown := false
 wheel := false
 
+#HotIf GetKeyState("RButton", "P")
+
 WheelDown:: {
-    if (rButtonDown) {
-        Send("{PgDn}")
-        global wheel
-        wheel := true
-    } else {
-        Send("{WheelDown}")
-    }
+    Send("{PgDn}")
+    global wheel := true
 }
 
 WheelUp:: {
-    if (rButtonDown) {
-        Send("{PgUp}")
-        global wheel
-        wheel := true
-    } else {
-        Send("{WheelUp}")
-    }
+    Send("{PgUp}")
+    global wheel := true
 }
+
+#HotIf
 
 lastRButton := 0
 
 $RButton:: {
     global lastRButton
-    global wheel
-    global rButtonDown
     if (A_TickCount - lastRButton < 300) {
         return
     }
-    rButtonDown := true
-    wheel := false
+    global wheel := false
     hgs.Start()
     KeyWait("RButton")
-    rButtonDown := false
     hgs.Stop()
     lastRButton := A_TickCount
     if hgs.Result.Valid {
