@@ -155,19 +155,20 @@ ShowLauncherMenu() {
     if mouseY > wBottom {
         menu_y := wBottom
     }
-    ThemeUtils.darkMenuMode(ThemeUtils.SysIsDarkMode)
     launcherMenu.Show(menu_x, menu_y)
 }
 
 MenuShowCallback(wParam, lParam, *) {
-    if IsSet(scriptMenu) {
-        if wParam = scriptMenu.Handle {
-            for item in scriptMenu.data {
-                if WinExist(item.path " - AutoHotkey") {
-                    scriptMenu.SetIcon(item.name, "%SystemRoot%\system32\shell32.dll", 295)
-                } else {
-                    scriptMenu.SetIcon(item.name, "*")
-                }
+    if wParam = A_TrayMenu.Handle {
+        ThemeUtils.darkMenuMode(ThemeUtils.SysIsDarkMode)
+    } else if IsSet(launcherMenu) && wParam = launcherMenu.Handle {
+        ThemeUtils.darkMenuMode(ThemeUtils.SysIsDarkMode)
+    } else if IsSet(scriptMenu) && wParam = scriptMenu.Handle {
+        for item in scriptMenu.data {
+            if WinExist(item.path " - AutoHotkey") {
+                scriptMenu.SetIcon(item.name, "%SystemRoot%\system32\shell32.dll", 295)
+            } else {
+                scriptMenu.SetIcon(item.name, "*")
             }
         }
     }
