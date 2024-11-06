@@ -26,21 +26,21 @@
     Array.Flat()                            => Turns a nested array into a one-level array.
     Array.Extend(arr)                       => Adds the contents of another array to the end of this one.
 */
-Array.Prototype.DefineProp("Slice", { Call: Slice })
-Array.Prototype.DefineProp("Swap", { Call: Swap })
+Array.Prototype.DefineProp("Slice", { Call: ArraySlice })
+Array.Prototype.DefineProp("Swap", { Call: ArraySwap })
 Array.Prototype.DefineProp("Map", { Call: ArrayMap })
-Array.Prototype.DefineProp("ForEach", { Call: ForEach })
-Array.Prototype.DefineProp("Filter", { Call: Filter })
-Array.Prototype.DefineProp("Reduce", { Call: Reduce })
-Array.Prototype.DefineProp("IndexOf", { Call: IndexOf })
-Array.Prototype.DefineProp("Find", { Call: Find })
-Array.Prototype.DefineProp("Reverse", { Call: Reverse })
-Array.Prototype.DefineProp("Count", { Call: Count })
-Array.Prototype.DefineProp("Sort", { Call: Sort })
-Array.Prototype.DefineProp("Shuffle", { Call: Shuffle })
-Array.Prototype.DefineProp("Join", { Call: Join })
-Array.Prototype.DefineProp("Flat", { Call: Flat })
-Array.Prototype.DefineProp("Extend", { Call: Extend })
+Array.Prototype.DefineProp("ForEach", { Call: ArrayForEach })
+Array.Prototype.DefineProp("Filter", { Call: ArrayFilter })
+Array.Prototype.DefineProp("Reduce", { Call: ArrayReduce })
+Array.Prototype.DefineProp("IndexOf", { Call: ArrayIndexOf })
+Array.Prototype.DefineProp("Find", { Call: ArrayFind })
+Array.Prototype.DefineProp("Reverse", { Call: ArrayReverse })
+Array.Prototype.DefineProp("Count", { Call: ArrayCount })
+Array.Prototype.DefineProp("Sort", { Call: ArraySort })
+Array.Prototype.DefineProp("Shuffle", { Call: ArrayShuffle })
+Array.Prototype.DefineProp("Join", { Call: ArrayJoin })
+Array.Prototype.DefineProp("Flat", { Call: ArrayFlat })
+Array.Prototype.DefineProp("Extend", { Call: ArrayExtend })
 
 /**
  * Returns a section of the array from 'start' to 'end', optionally skipping elements with 'step'.
@@ -50,7 +50,7 @@ Array.Prototype.DefineProp("Extend", { Call: Extend })
  * @param step Optional: an integer specifying the incrementation. Default is 1.
  * @returns {Array}
  */
-Slice(arr, start := 1, end := 0, step := 1) {
+ArraySlice(arr, start := 1, end := 0, step := 1) {
     len := arr.Length, i := start < 1 ? len + start : start, j := Min(end < 1 ? len + end : end, len), r := []
     if len = 0
         return []
@@ -78,7 +78,7 @@ Slice(arr, start := 1, end := 0, step := 1) {
  * @param b Second elements index to swap
  * @returns {Array}
  */
-Swap(arr, a, b) {
+ArraySwap(arr, a, b) {
     temp := arr[b]
     arr[b] := arr[a]
     arr[a] := temp
@@ -109,7 +109,7 @@ ArrayMap(arr, func, arrays*) {
  * @param func The callback function with arguments Callback(value[, index, array]).
  * @returns {Array}
  */
-ForEach(arr, func) {
+ArrayForEach(arr, func) {
     if !HasMethod(func)
         throw ValueError("ForEach: func must be a function", -1)
     for i, v in arr
@@ -122,7 +122,7 @@ ForEach(arr, func) {
  * @param func The filter function that accepts one argument.
  * @returns {Array}
  */
-Filter(arr, func) {
+ArrayFilter(arr, func) {
     if !HasMethod(func)
         throw ValueError("Filter: func must be a function", -1)
     r := []
@@ -140,7 +140,7 @@ Filter(arr, func) {
  * @example
  * [1,2,3,4,5].Reduce((a,b) => (a+b)) ; returns 15 (the sum of all the numbers)
  */
-Reduce(arr, func, initialValue?) {
+ArrayReduce(arr, func, initialValue?) {
     if !HasMethod(func)
         throw ValueError("Reduce: func must be a function", -1)
     len := arr.Length + 1
@@ -161,7 +161,7 @@ Reduce(arr, func, initialValue?) {
  * @param value The value to search for.
  * @param start Optional: the index to start the search from. Default is 1.
  */
-IndexOf(arr, value, start := 1) {
+ArrayIndexOf(arr, value, start := 1) {
     if !IsInteger(start)
         throw ValueError("IndexOf: start value must be an integer")
     for i, v in arr {
@@ -181,7 +181,7 @@ IndexOf(arr, value, start := 1) {
  * @example
  * [1,2,3,4,5].Find((v) => (Mod(v,2) == 0)) ; returns 2
  */
-Find(arr, func, &match?, start := 1) {
+ArrayFind(arr, func, &match?, start := 1) {
     if !HasMethod(func)
         throw ValueError("Find: func must be a function", -1)
     for i, v in arr {
@@ -200,7 +200,7 @@ Find(arr, func, &match?, start := 1) {
  * @example
  * [1,2,3].Reverse() ; returns [3,2,1]
  */
-Reverse(arr) {
+ArrayReverse(arr) {
     len := arr.Length + 1, max := (len // 2), i := 0
     while ++i <= max
         arr.Swap(i, len - i)
@@ -211,7 +211,7 @@ Reverse(arr) {
  * Counts the number of occurrences of a value
  * @param value The value to count. Can also be a function.
  */
-Count(arr, value) {
+ArrayCount(arr, value) {
     count := 0
     if HasMethod(value) {
         for v in arr
@@ -240,7 +240,7 @@ Count(arr, value) {
  *     If you have an array of objects, specify here the key by which contents the object will be sorted.
  * @returns {Array}
  */
-Sort(arr, optionsOrCallback := "N", key?) {
+ArraySort(arr, optionsOrCallback := "N", key?) {
     static sizeofFieldType := A_PtrSize * 2
     if HasMethod(optionsOrCallback)
         pCallback := CallbackCreate(CustomCompare.Bind(optionsOrCallback), "F", 2), optionsOrCallback := ""
@@ -262,7 +262,7 @@ Sort(arr, optionsOrCallback := "N", key?) {
     if RegExMatch(optionsOrCallback, "i)R(?!a)")
         arr.Reverse()
     if InStr(optionsOrCallback, "U")
-        arr := arr.Unique(arr)
+        arr := ArrayUnique(arr)
     return arr
 
     CustomCompare(compareFunc, pFieldType1, pFieldType2) => (ValueFromFieldType(pFieldType1, &fieldValue1), ValueFromFieldType(pFieldType2, &fieldValue2), compareFunc(fieldValue1, fieldValue2))
@@ -288,7 +288,7 @@ Sort(arr, optionsOrCallback := "N", key?) {
  * Randomizes the array. Slightly faster than Array.Sort(,"Random N")
  * @returns {Array}
  */
-Shuffle(arr) {
+ArrayShuffle(arr) {
     len := arr.Length
     Loop len - 1
         arr.Swap(A_index, Random(A_index, len))
@@ -298,7 +298,7 @@ Shuffle(arr) {
 /**
  * 去重
  */
-Unique(arr) {
+ArrayUnique(arr) {
     unique := Map()
     for v in arr
         unique[v] := 1
@@ -309,7 +309,7 @@ Unique(arr) {
  * @param delim Optional: the delimiter to use. Default is comma.
  * @returns {String}
  */
-Join(arr, delim := ",") {
+ArrayJoin(arr, delim := ",") {
     result := ""
     for v in arr
         result .= v delim
@@ -322,7 +322,7 @@ Join(arr, delim := ",") {
  * @example
  * [1,[2,[3]]].Flat() ; returns [1,2,3]
  */
-Flat(arr) {
+ArrayFlat(arr) {
     r := []
     for v in arr {
         if Type(v) = "Array"
@@ -337,7 +337,7 @@ Flat(arr) {
  * @param arr The array that is used to extend this one.
  * @returns {Array}
  */
-Extend(arr, arr1) {
+ArrayExtend(arr, arr1) {
     if !HasMethod(arr1, "__Enum")
         throw ValueError("Extend: arr must be an iterable")
     for v in arr1
