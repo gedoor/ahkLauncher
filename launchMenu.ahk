@@ -54,7 +54,7 @@ A_TrayMenu.Add("Exit", (*) => ExitApp())
 A_TrayMenu.Add()
 A_TrayMenu.Add("SelectLaunchDir", SelectLaunchDir)
 A_TrayMenu.Add("OpenLaunchDir", (*) => Run(launcherLnk))
-A_TrayMenu.Add("OpenAppDir", (*) => Run("explore " A_ScriptDir))
+A_TrayMenu.Add("OpenAppDir", (*) => Run("explorer " A_ScriptDir))
 A_TrayMenu.Add()
 
 dpiZom := A_ScreenDPI / 96
@@ -213,7 +213,11 @@ MenuRButtonUpCallback(wParam, lParam, *) {
         if path ~= ".*?.lnk$" {
             FileGetShortcut path, &path
         }
-        ToolTip(path)
+        if GetKeyState("LControl", "P") {
+            Run("explorer /select,`"" menuItem.path "`"")
+        } else {
+            ToolTip(path "`n按住Ctrl右击打开文件夹")
+        }
     } else if lParam = scriptMenu.Handle {
         ahkPath := scriptMenu.data[wParam + 1].path
         description := DescriptionUtils.getAhkDescription(ahkPath)
