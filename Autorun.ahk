@@ -1,6 +1,7 @@
 #Include lib\AppUtils.ahk
 #Include lib\ArrayExtensions.ahk
 #NoTrayIcon
+DetectHiddenWindows True
 
 autoRuns := StrSplit(IniRead(configIni, "config", "autoRuns", ""), ",")
 removed := []
@@ -8,7 +9,9 @@ removed := []
 for fileName in autoRuns {
     path := A_ScriptDir "\ux\" fileName
     if FileExist(path) {
-        Run '"' A_AhkPath '" "' path '"'
+        if not WinExist(path  " - AutoHotkey") {
+            Run '"' A_AhkPath '" "' path '"'
+        }
     } else {
         removed.Push(A_Index)
     }
