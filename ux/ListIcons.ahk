@@ -68,11 +68,13 @@ class icons {
         this.resources := resources
         If sIconFile {
             str := sIconFile
-            file_loc := [str, A_WinDir "\" str, A_WinDir "\System32\" str], exist := false, sFileName := ""
-            For i, sFile in file_loc
+            file_loc := [str, A_WinDir "\" str, A_WinDir "\System32\" str], 
+            exist := false, 
+            sFileName := ""
+            For i, sFile in file_loc {
                 If FileExist(sFile)
                     exist := true, sIconFile := sFile
-
+            }
             If !exist
                 throw Error("Specified file does not exist.", , str)
         }
