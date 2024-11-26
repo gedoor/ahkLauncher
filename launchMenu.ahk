@@ -4,6 +4,7 @@
 #Include lib\DirTreeMenu.ahk
 #Include lib\LauncherJumpList.ahk
 #Include lib\ThemeUtils.ahk
+#Include lib\WatchFolder.ahk
 #Include lib\DescriptionUtils.ahk
 AppUtils.SetCurrentProcessExplicitAppUserModelID(AppUserModelID)
 ;@Ahk2Exe-SetMainIcon res\launcher.ico
@@ -66,6 +67,8 @@ BulidLauncherMenu()
 if showOnLoaded {
     ShowLauncherMenu()
 }
+
+watchLauncerDir := WatchFolder(launcherPath, "LaunchChangeCallback", true, 0x00000013)
 
 Run '"' A_AhkPath '" "' A_ScriptDir '\Autorun.ahk"'
 
@@ -225,6 +228,10 @@ MenuRButtonUpCallback(wParam, lParam, *) {
             ToolTip(description)
         }
     }
+}
+
+LaunchChangeCallback(path, notifications) {
+    BulidLauncherMenu()
 }
 
 SelectLaunchDir(*) {
