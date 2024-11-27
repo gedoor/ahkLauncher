@@ -89,7 +89,7 @@ class DirTreeMenu {
                 SplitPath OutTarget, , , &OutTargetExt
                 if OutTargetExt = "exe" || OutTargetExt = "dll"
                     OutIconChoice := { path: OutTarget, num: 0 }
-                if (OutIcon && OutIconNum)
+                else if (OutIcon && OutIconNum && FileExist(OutIcon))
                     OutIconChoice := { path: OutIcon, num: (OutIconNum - 1) }
                 else {
                     ; Support shortcuts to folders with no custom icon set (default)
