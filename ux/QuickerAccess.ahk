@@ -16,13 +16,6 @@ Init()
 If FileExist(shell32dll := EnvGet("SystemRoot") "\System32\shell32.dll")
 	TraySetIcon(shell32dll, "321")
 
-A_TrayMenu.Delete()
-A_TrayMenu.Add("Edit address list", (*) => EditAddressList())
-A_TrayMenu.Add("Settings", Settings)
-A_TrayMenu.Add("Show", ToggleMainGui)
-A_TrayMenu.Default := "Show"
-A_TrayMenu.ClickCount := 1
-
 MainGui := Gui("+Resize", "QuickerAccess")
 MainGui.Opt("+Owner")
 MainGui.SetFont("s10", "Segoe UI")

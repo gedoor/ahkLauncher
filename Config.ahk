@@ -56,7 +56,7 @@ Constructor()
     }
 
     for item in uxFiles {
-        uxView.Add(, item.name, item.autoRun, item.status)
+        uxView.Add(, item.name, formatAutorun(item.autoRun), item.status)
     }
 
     uxView.OnEvent("ContextMenu", Ctrl_ContextMenu)
@@ -75,7 +75,7 @@ Constructor()
             if (item.autoRun != isAutorun || item.status != mStatus) {
                 item.autoRun := isAutorun
                 item.status := mStatus
-                uxView.Modify(A_Index, , item.name, item.autoRun, item.status)
+                uxView.Modify(A_Index, , item.name, formatAutorun(item.autoRun), item.status)
             }
         }
     }
@@ -115,10 +115,10 @@ Constructor()
         } else {
             cMenu.Add("运行", RunScript)
         }
-        if (ux.autoRun = "✕") {
-            cMenu.Add("启用自动运行", EnableAutoRun)
-        } else {
+        if (ux.autoRun) {
             cMenu.Add("禁用自动运行", DisableAutoRun)
+        } else {
+            cMenu.Add("启用自动运行", EnableAutoRun)
         }
         cMenu.Show()
     }
@@ -130,9 +130,10 @@ Constructor()
             autoRuns.Push(fileName)
             IniWrite(autoRuns.Join(), configIni, "config", "autoRuns")
         }
-        index := uxFiles.IndexOf(fileName)
+        index := uxFiles.find((v) => v.name = fileName)
         if (index > 0) {
-            uxView.Modify(index, , fileName, "✓", Status(fileName))
+            uxFiles[index].autoRun := true
+            uxView.Modify(index, , fileName, formatAutorun(true), Status(fileName))
         }
     }
 
@@ -144,9 +145,10 @@ Constructor()
             autoRuns.RemoveAt(fileIndex)
             IniWrite(autoRuns.Join(), configIni, "config", "autoRuns")
         }
-        index := uxFiles.IndexOf(fileName)
+        index := uxFiles.find((v) => v.name = fileName)
         if (index > 0) {
-            uxView.Modify(index, , fileName, "✕", Status(fileName))
+            uxFiles[index].autoRun := false
+            uxView.Modify(index, , fileName, formatAutorun(false), Status(fileName))
         }
     }
 
@@ -164,12 +166,16 @@ Constructor()
     }
 
     Autorun(fileName) {
-        return autoRuns.IndexOf(fileName) ? "✓" : "✕"
+        return autoRuns.IndexOf(fileName)
     }
 
     Status(fileName) {
         path := A_ScriptDir "\ux\" fileName
         return WinExist(path " - AutoHotkey") ? "运行中" : ""
+    }
+
+    formatAutorun(isAutoRun) {
+        return isAutoRun ? "✓" : "✕"
     }
 
     return cfgGui
