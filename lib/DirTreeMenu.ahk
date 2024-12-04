@@ -40,7 +40,7 @@ class DirTreeMenu {
                 })
             } else {
                 fileName := A_LoopFileName
-                if RegExMatch(fileName, "i).*?\.(exe|lnk)$") {
+                if RegExMatch(fileName, "i).*?\.(exe|lnk|url)$") {
                     fileName := SubStr(fileName, 1, StrLen(fileName) - 4)
                 }
                 list.Push({
@@ -104,10 +104,13 @@ class DirTreeMenu {
         ; support windows internet shortcut files *.url
         else if fExt = "url"
         {
-            OutIcon := IniRead(fPath, "InternetShortcut", "IconFile")
+            OutIcon := IniRead(fPath, "InternetShortcut", "IconFile", "")
             OutIconNum := IniRead(fPath, "InternetShortcut", "IconIndex", 0)
-            if FileExist(OutIcon)
+            if FileExist(OutIcon) {
                 OutIconChoice := { path: OutIcon, num: OutIconNum }
+            } else {
+                OutIconChoice := { path: "shell32.dll", num: 242 }
+            }
         }
     
         ; support folder icons

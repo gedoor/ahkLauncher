@@ -1,6 +1,11 @@
+/************************************************************************
+ * @description 喜欢的文件夹和文件的快速访问
+ ***********************************************************************/
+
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-
+#NoTrayIcon
+DllCall("Shell32.dll\SetCurrentProcessExplicitAppUserModelID", "str", "QuickerAccess")
 Global CONFIG_FILEPATH := (()=>(SplitPath(A_ScriptName,,,,&Name), A_ScriptDir "\data\" Name ".ini"))()
 Global DefaultConfig := Map("AddressList","%USERPROFILE%`nDocuments`nMusic`nPictures`nDownloads`n%WINDIR%\Web\Wallpaper`n%APPDATA%`n%TEMP%`n%SYSTEMROOT%\Notepad.exe`nipconfig /flushdns", "WindowSize","w400 h400", "ShowKey","!q")
 Global Config := LoadConfig(CONFIG_FILEPATH, DefaultConfig)
@@ -19,6 +24,7 @@ A_TrayMenu.Default := "Show"
 A_TrayMenu.ClickCount := 1
 
 MainGui := Gui("+Resize", "QuickerAccess")
+MainGui.Opt("+Owner")
 MainGui.SetFont("s10", "Segoe UI")
 MainGui.MarginX := 0, MainGui.MarginY := 0
 FilterEdit := MainGui.Add("Edit", "vFilterEdit")
