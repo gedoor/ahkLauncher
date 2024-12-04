@@ -6,7 +6,20 @@
 
 class ThemeUtils {
 
+    /**
+     * 应用主题
+     */
     static SysIsDarkMode => !RegRead("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", 1)
+
+
+    /**
+     * 切换系统亮色暗色主题
+     */
+    static SwitchSysTheme() {
+        isLightTheme := RegRead("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "SystemUsesLightTheme", 1)
+        RegWrite(!isLightTheme, "REG_DWORD", "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "SystemUsesLightTheme")
+        RegWrite(!isLightTheme, "REG_DWORD", "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+    }
 
 
     /**
