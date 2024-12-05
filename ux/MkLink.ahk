@@ -48,7 +48,15 @@ CmdChange(*) {
 }
 
 GetCmd() {
-    return "MKLINK " linkType " `"" linkEdit.Text "`" `"" targetEdit.Text "`""
+    link := linkEdit.Text
+    target := targetEdit.Text
+    if (linkType = "" || linkType = "/H") {
+        if InStr(FileExist(link), "D") {
+            SplitPath(target, &fileName)
+            link := link "\" fileName
+        }
+    }
+    return "MKLINK " linkType " `"" link "`" `"" target "`""
 }
 
 OkEvent(*) {

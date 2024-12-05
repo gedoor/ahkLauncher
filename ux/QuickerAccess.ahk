@@ -5,7 +5,7 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 #NoTrayIcon
-DllCall("Shell32.dll\SetCurrentProcessExplicitAppUserModelID", "str", "QuickerAccess")
+DllCall("Shell32.dll\SetCurrentProcessExplicitAppUserModelID", "str", "AhkQuickerAccess")
 Global CONFIG_FILEPATH := (()=>(SplitPath(A_ScriptName,,,,&Name), A_ScriptDir "\data\" Name ".ini"))()
 Global DefaultConfig := Map("AddressList","%USERPROFILE%`nDocuments`nMusic`nPictures`nDownloads`n%WINDIR%\Web\Wallpaper`n%APPDATA%`n%TEMP%`n%SYSTEMROOT%\Notepad.exe`nipconfig /flushdns", "WindowSize","w400 h400", "ShowKey","!q")
 Global Config := LoadConfig(CONFIG_FILEPATH, DefaultConfig)
@@ -16,8 +16,7 @@ Init()
 If FileExist(shell32dll := EnvGet("SystemRoot") "\System32\shell32.dll")
 	TraySetIcon(shell32dll, "321")
 
-MainGui := Gui("+Resize", "QuickerAccess")
-MainGui.Opt("+Owner")
+MainGui := Gui("+Owner +Resize", "QuickerAccess")
 MainGui.SetFont("s10", "Segoe UI")
 MainGui.MarginX := 0, MainGui.MarginY := 0
 FilterEdit := MainGui.Add("Edit", "vFilterEdit")
