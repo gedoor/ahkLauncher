@@ -5,6 +5,7 @@
 #Requires AutoHotkey v2.0
 #NoTrayIcon
 TraySetIcon("shell32.dll", 219)
+DllCall("Shell32.dll\SetCurrentProcessExplicitAppUserModelID", "str", "AhkScreenFiles")
 FileEncoding("UTF-8")
 mainGui := Gui(, "文件提取器")
 mainGui.Add("Text","x10 y10","搜索文件夹:")
@@ -22,12 +23,10 @@ buttonDir.OnEvent("Click", SelectDir)
 buttonTxt.OnEvent("Click", SelectTxt)
 buttonOutDir.OnEvent("Click", SelectOutDir)
 buttonOk.OnEvent("Click", StartScreen)
+mainGui.OnEvent("Close", (*) => ExitApp)
 mainGui.Show()
 
 return
-
-GuiClose:
-ExitApp
 
 SelectDir(*) {
     mainGui.Opt("+OwnDialogs")
