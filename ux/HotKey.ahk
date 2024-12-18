@@ -31,7 +31,7 @@ CapsLock:: {
     ; in 0.2 seconds and pressed again within 0.2 seconds
     if ((A_TimeSinceThisHotkey < 200) and KeyWait('CapsLock', 'D T0.2'))
     {
-        SetCapsLockState !GetKeyState('CapsLock', 'T')
+        SetCapsLockState(!GetKeyState('CapsLock', 'T'))
     }
 }
 ; This forces capslock into a modifying key & blocks the alt/start menus
@@ -49,8 +49,10 @@ RWin:: return
 ; 翻译
 q:: {
     cSelected := GetSelectedText()
-    text := GoogleTranslate(cSelected, &from := 'auto', 'zh')
-    MsgBox text, "翻译"
+    if Trim(cSelected) {
+        text := GoogleTranslate(cSelected, &from := 'auto', 'zh')
+        MsgBox text, "翻译"
+    }
 }
 
 ; 大小写转换
@@ -124,21 +126,21 @@ LButton::
 {
     ; Get the initial mouse position and window id, and
     ; abort if the window is maximized.
-    MouseGetPos &KDE_X1, &KDE_Y1, &KDE_id
+    MouseGetPos(&KDE_X1, &KDE_Y1, &KDE_id)
     if WinGetMinMax(KDE_id)
         return
     ; Get the initial window position.
-    WinGetPos &KDE_WinX1, &KDE_WinY1, &width, &height, KDE_id ; &width and &height added by Cebolla
+    WinGetPos(&KDE_WinX1, &KDE_WinY1, &width, &height, KDE_id) ; &width and &height added by Cebolla
     Loop
     {
         if !GetKeyState("LButton", "P") ; Break if button has been released.
             break
-        MouseGetPos &KDE_X2, &KDE_Y2 ; Get the current mouse position.
+        MouseGetPos(&KDE_X2, &KDE_Y2) ; Get the current mouse position.
         KDE_X2 -= KDE_X1 ; Obtain an offset from the initial mouse position.
         KDE_Y2 -= KDE_Y1
         KDE_WinX2 := (KDE_WinX1 + KDE_X2) ; Apply this offset to the window position.
         KDE_WinY2 := (KDE_WinY1 + KDE_Y2)
-        WinMove KDE_WinX2, KDE_WinY2, width, height, KDE_id ; Move the window to the new position.
+        WinMove(KDE_WinX2, KDE_WinY2, width, height, KDE_id) ; Move the window to the new position.
     }
 }
 
@@ -147,7 +149,7 @@ RButton::
 {
     ; Get the initial mouse position and window id, and
     ; abort if the window is maximized.
-    MouseGetPos &KDE_X1, &KDE_Y1, &KDE_id
+    MouseGetPos(&KDE_X1, &KDE_Y1, &KDE_id)
     style := WinGetStyle(KDE_id)
     ; 样式没有0x40000 无法调整大小的窗口
     if not (style & 0x40000) {
@@ -156,7 +158,7 @@ RButton::
     if WinGetMinMax(KDE_id)
         return
     ; Get the initial window position and size.
-    WinGetPos &KDE_WinX1, &KDE_WinY1, &KDE_WinW, &KDE_WinH, KDE_id
+    WinGetPos(&KDE_WinX1, &KDE_WinY1, &KDE_WinW, &KDE_WinH, KDE_id)
     ; Define the window region the mouse is currently in.
     ; The four regions are Up and Left, Up and Right, Down and Left, Down and Right.
     if (KDE_X1 < KDE_WinX1 + KDE_WinW / 2)
@@ -171,17 +173,17 @@ RButton::
     {
         if !GetKeyState("RButton", "P") ; Break if button has been released.
             break
-        MouseGetPos &KDE_X2, &KDE_Y2 ; Get the current mouse position.
+        MouseGetPos(&KDE_X2, &KDE_Y2) ; Get the current mouse position.
         ; Get the current window position and size.
-        WinGetPos &KDE_WinX1, &KDE_WinY1, &KDE_WinW, &KDE_WinH, KDE_id
+        WinGetPos(&KDE_WinX1, &KDE_WinY1, &KDE_WinW, &KDE_WinH, KDE_id)
         KDE_X2 -= KDE_X1 ; Obtain an offset from the initial mouse position.
         KDE_Y2 -= KDE_Y1
         ; Then, act according to the defined region.
-        WinMove KDE_WinX1 + (KDE_WinLeft + 1) / 2 * KDE_X2  ; X of resized window
-        , KDE_WinY1 + (KDE_WinUp + 1) / 2 * KDE_Y2  ; Y of resized window
-        , KDE_WinW - KDE_WinLeft * KDE_X2  ; W of resized window
-        , KDE_WinH - KDE_WinUp * KDE_Y2  ; H of resized window
-        , KDE_id
+        WinMove(KDE_WinX1 + (KDE_WinLeft + 1) / 2 * KDE_X2,  ; X of resized window
+            KDE_WinY1 + (KDE_WinUp + 1) / 2 * KDE_Y2,  ; Y of resized window
+            KDE_WinW - KDE_WinLeft * KDE_X2,  ; W of resized window
+            KDE_WinH - KDE_WinUp * KDE_Y2,  ; H of resized window
+            KDE_id)
         KDE_X1 := (KDE_X2 + KDE_X1) ; Reset the initial position for the next iteration.
         KDE_Y1 := (KDE_Y2 + KDE_Y1)
     }
