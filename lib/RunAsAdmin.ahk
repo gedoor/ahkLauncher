@@ -12,6 +12,7 @@ runAsAdmin() {
         catch error
         {
             MsgBox("you did not allow the script to run!")
+            ExitApp
         }
     }
 }

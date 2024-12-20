@@ -6,8 +6,6 @@
 #NoTrayIcon
 #Include ..\lib\RunAsAdmin.ahk
 
-runAsAdmin()
-
 try FileDelete("%localappdata%\Iconcache.db")
 
 ProcessClose("explorer.exe")
