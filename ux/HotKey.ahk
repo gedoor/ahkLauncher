@@ -81,6 +81,9 @@ p:: {
     SetTimer () => RestoreClip(), -1000
 }
 
+; 按键映射ctrl+win+alt+shift+v
+v::#!^+v
+
 ; 粘贴剪贴板历史第1条记录
 1:: {
     if WinClip.History.Count >= 1 {
