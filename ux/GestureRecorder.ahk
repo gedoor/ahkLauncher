@@ -6,4 +6,4 @@
 #NoTrayIcon
 DllCall("Shell32.dll\SetCurrentProcessExplicitAppUserModelID", "str", "GestureRecorder")
 
-GestureRecorder()
+GestureRecorder.Show
