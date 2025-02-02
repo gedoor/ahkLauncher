@@ -116,7 +116,7 @@ if (!A_IsCompiled and A_LineFile = A_ScriptFullPath)
     JAB.Viewer()
 
 class JAB {
-    DllPath := "", MaxRecurseDepth := 0xFFFFFFFF
+    static DllPath := "", MaxRecurseDepth := 0xFFFFFFFF
     JavaVersion => (this.DefineProp("JavaVersion", { value: RegRead("HKLM\SOFTWARE" (A_PtrSize = 8 ? "\Wow6432Node" : "") "\JavaSoft\Java Runtime Environment", "CurrentVersion", "") }), this.JavaVersion)
     JavaHome => (this.DefineProp("JavaHome", { value: RegRead("HKLM\SOFTWARE" (A_PtrSize = 8 ? "\Wow6432Node" : "") "\JavaSoft\Java Runtime Environment\" this.JavaVersion, "JavaHome", "") }), this.JavaHome)
 
