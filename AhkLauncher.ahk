@@ -38,6 +38,6 @@ try {
     Run A_AhkPath " launchMenu.ahk show"
 }
 
-AppUtils.createAppLnk()
+AppUtils.createAppLnk(A_ScriptDir "\res\launcher.ico")
 
 LauncherJumpList.up(AppUserModelID)

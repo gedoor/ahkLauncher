@@ -9,16 +9,18 @@ class AppUtils {
     /**
      * 使用AppUserModelID创建App快捷方式
      */
-    static createAppLnk() {
-        appLnk := A_ScriptDir "\AhkLauncher.lnk"
+    static createAppLnk(icon, iconIndex := 0, userModelId := AppUserModelID) {
+        appName := SubStr(A_ScriptName, 1, StrLen(A_ScriptName) - 4)
+        appLnk := A_ScriptDir "\" appName ".lnk"
 
         if not FileExist(appLnk) {
             shellLink := IShellLink()
             shellLink.SetPath(A_ScriptDir "\AhkLauncher.exe")
+            shellLink.SetArguments(A_ScriptFullPath)
             shellLink.SetWorkingDirectory(A_ScriptDir)
-            shellLink.SetTitle("AhkLauncher")
-            shellLink.SetIconLocation(A_ScriptDir "\res\launcher.ico", 0)
-            shellLink.SetAppUserModelID(AppUserModelID)
+            shellLink.SetTitle(appName)
+            shellLink.SetIconLocation(icon, iconIndex)
+            shellLink.SetAppUserModelID(userModelId)
             shellLink.Commit()
             shellLink.Save(appLnk, true)
         }
